@@ -1,3 +1,3 @@
 // Settings
-int screenCode = 0;
+int screenCode = 1;
 
