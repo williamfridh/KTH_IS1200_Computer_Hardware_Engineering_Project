@@ -10,7 +10,7 @@
  * that is'nt directly connected to either the game or menu.
 */
 int screen_code = 0;
-int in_game = 0;
+bool in_game = false;
 
 
 
@@ -34,6 +34,21 @@ int main(void) {
 		listenForInput();
 	}
 	return 0;															// Won't be reached due to inifinite loop
+}
+
+
+
+/**
+ * Set Screen Code
+ * 
+ * This function checks the target screen code before setting it.
+ */
+void setScreenCode(int code) {
+	if (code < 1) {														// Make sure target code is positive.
+		return;
+	} else {
+		screen_code = code;
+	}
 }
 
 
