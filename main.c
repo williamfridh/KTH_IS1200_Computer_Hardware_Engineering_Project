@@ -26,6 +26,7 @@ int main(void) {
 	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
 	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
 
+  	TRISDSET = 0xf0;  	                 								// Set Buttons 1-4 as inputs 
 	timerInit();														// Initilize timer
 	while(1) {															// Inifinite loop for listening
 		updateScreen();
