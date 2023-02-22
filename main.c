@@ -1,61 +1,79 @@
-#include <stdint.h>   /* Declarations of uint_32 and the like */
-#include <pic32mx.h>  /* Declarations of system-specific addresses etc */
-
-// Settings
-int screenCode = 1;
-int inGame = 1;
+#include <stdint.h>								// Declarations of uint_32 and the like.
+#include <pic32mx.h>							// Declarations of system-specific addresses etc.
 
 
+
+/**
+ * Settings & Data
+ * 
+ * This section should hold the global settings and data
+ * that is'nt directly connected to either the game or menu.
+*/
+int screen_code = 0;
+int in_game = 0;
+
+
+
+/**
+ * Main Function
+ * 
+ * The main function is called on startup and will continue
+ * running infinite thanks to the while-loop.
+*/
 int main(void) {
-volatile int * porte = (volatile int *) 0xbf886110;                   // Supposed to be inside labwork(), but unnecesarry
-*porte = 0x2;
-  timerInit();
-  while(1) {
-    listenForTick();
-  }
-  
+
+	// Debugging code
+	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
+	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
+
+	timerInit();														// Initilize timer
+	while(1) {															// Inifinite loop for listening
+		updateScreen();
+		listenForTick();						
+		listenForInput();
+	}
+	return 0;															// Won't be reached due to inifinite loop
 }
 
-/* Lab-specific initialization goes here */
-void timerInit( void )
-{
 
-  volatile int * trise = (volatile int *) 0xbf886100;                 // Defined pointer to TRISE
-  *trise = *trise & 0xffffff00;                                       // Set ports 0-7 as outputs
 
-  TRISDSET = 0xfe0;                   //Set switches 1,2,3,4 and buttons 2,3,4 as inputs 
-  T2CON = 0x70;                       //Stopping timer and setting the prescaler to 1/256
-  PR2 = ((80000000 / 256)/ 10);       //Setting the period for the timer
-  TMR2 = 0;                           //Ticks to PR2
-  T2CONSET = 0x8000;                  //Starting timer
-
-  return;
-}
-
-/* This function is called repetitively from the main program */
-volatile int * porte = (volatile int *) 0xbf886110;                   // Supposed to be inside labwork(), but unnecesarry
-int timeoutcount = 0;                                                 //A global counter used in labwork
-int ledTime = 0;                                                      //Int time counter 
-void listenForTick( void )
-{
-
-  if(IFS(0) & 0x100){                                             //Detect and interrupt flag
-    timeoutcount++;                                               //Increment global counter 
-    IFS(0) = 0;                                                   //Clear flags
-    if(timeoutcount == 10){                                       //If there as been 10 timeout event flags then the timer value and LEDs will update
-      timeoutcount = 0;
-      *porte = ledTime;                                           //Set let value to mytime.
-      ledTime++;
-      update();
-    }
-  }
-
-}
-
-void update(void) {
-	if (inGame) {
+/**
+ * Update Screen
+ * 
+ * Check if a game is running or not and call
+ * correct render function based on that.
+*/
+void updateScreen(void) {
+	if (in_game) {
 		renderGame();
 	} else {
-		//renderMenu();
+		renderMenu();
 	}
 }
+
+
+
+/**
+ * Get Buttons
+*/
+int getButtons(void){
+    return (PORTD & 0xe0) >> 4; 
+}
+
+
+
+/**
+ * Listen For Inputs
+ * 
+ * This function calls getButtons, sorts
+ * this data and takes relevant action.
+*/
+void listenForInput() {
+	int button_data = getButtons();
+	if (in_game) {
+		gameButtonTriggered(button_data);								// Send button data to the game button handler
+	} else {
+		menuButtonTriggered(button_data);								// Send button data to the menu button handler
+	}
+}
+
