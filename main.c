@@ -3,7 +3,7 @@
 
 // Settings
 int screenCode = 1;
-int mytime = 0x0000;
+int inGame = 1;
 
 
 int main(void) {
@@ -53,4 +53,9 @@ void listenForTick( void )
 }
 
 void update(void) {
+	if (inGame) {
+		renderGame();
+	} else {
+		//renderMenu();
+	}
 }
