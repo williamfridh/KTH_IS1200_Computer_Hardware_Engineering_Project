@@ -10,31 +10,7 @@
  * that is'nt directly connected to either the game or menu.
 */
 int screen_code = 0;
-bool in_game = false;
-
-
-
-/**
- * Main Function
- * 
- * The main function is called on startup and will continue
- * running infinite thanks to the while-loop.
-*/
-int main(void) {
-
-	// Debugging code
-	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
-	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
-
-  	TRISDSET = 0xf0;  	                 								// Set Buttons 1-4 as inputs 
-	timerInit();														// Initilize timer
-	while(1) {															// Inifinite loop for listening
-		updateScreen();
-		listenForTick();						
-		listenForInput();
-	}
-	return 0;															// Won't be reached due to inifinite loop
-}
+int in_game = 0;
 
 
 
@@ -91,5 +67,29 @@ void listenForInput() {
 	} else {
 		menuButtonTriggered(button_data);								// Send button data to the menu button handler
 	}
+}
+
+
+
+/**
+ * Main Function
+ * 
+ * The main function is called on startup and will continue
+ * running infinite thanks to the while-loop.
+*/
+int main(void) {
+
+	// Debugging code
+	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
+	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
+
+  	TRISDSET = 0xf0;  	                 								// Set Buttons 1-4 as inputs 
+	timerInit();														// Initilize timer
+	while(1) {															// Inifinite loop for listening
+		updateScreen();
+		listenForTick();						
+		listenForInput();
+	}
+	return 0;															// Won't be reached due to inifinite loop
 }
 

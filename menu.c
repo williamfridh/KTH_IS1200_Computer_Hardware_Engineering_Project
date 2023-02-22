@@ -14,6 +14,25 @@ void renderMenu(void) {
 
 
 /**
+ * Trigger OK click
+ * 
+ * The OK click is the action when the used selects something in the menu.
+ * The action will be based on the current screen code.
+*/
+void triggerOk(void) {
+    switch (screen_code) {
+    case (1):
+        /* code */
+        break;
+    
+    default:
+        break;
+    }
+}
+
+
+
+/**
  * Menu Buttone Triggered Handler
  * 
  * Handle button triggers when in menu.
@@ -47,25 +66,6 @@ void menuButtonTriggered(int buttonData) {
     
     default:
         // Can be removed.
-        break;
-    }
-}
-
-
-
-/**
- * Trigger OK click
- * 
- * The OK click is the action when the used selects something in the menu.
- * The action will be based on the current screen code.
-*/
-void triggerOk(void) {
-    switch (screen_code) {
-    case (1):
-        /* code */
-        break;
-    
-    default:
         break;
     }
 }
