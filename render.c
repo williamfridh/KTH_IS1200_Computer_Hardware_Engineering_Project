@@ -113,7 +113,7 @@ int* encodeCanvas() {
 
 }
 
-int main(void) {
+/*int main(void) {
     canvasPaint(0, 0, 64, 1);
     canvasPaint(0, 3, 64, 1);
     canvasPaint(0, 8, 64, 1);
@@ -135,5 +135,5 @@ int main(void) {
             t = 0;
         }
     }
-}
+}*/
 

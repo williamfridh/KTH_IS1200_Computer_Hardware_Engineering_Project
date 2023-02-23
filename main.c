@@ -38,9 +38,9 @@ void setScreenCode(int code) {
 */
 void updateScreen(void) {
 	if (in_game) {
-		renderGame();
+		//renderGame();
 	} else {
-		renderMenu();
+		//renderMenu();
 	}
 }
 
@@ -64,9 +64,9 @@ int getButtons(void){
 void listenForInput() {
 	int button_data = getButtons();
 	if (in_game) {
-		gameButtonTriggered(button_data);								// Send button data to the game button handler
+		//gameButtonTriggered(button_data);								// Send button data to the game button handler
 	} else {
-		menuButtonTriggered(button_data);								// Send button data to the menu button handler
+		//menuButtonTriggered(button_data);								// Send button data to the menu button handler
 	}
 }
 
@@ -85,10 +85,10 @@ int main(void) {
 	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
 
   	TRISDSET = 0xf0;  	                 								// Set Buttons 1-4 as inputs 
-	timerInit();														// Initilize timer
+	//timerInit();														// Initilize timer
 	while(1) {															// Inifinite loop for listening
 		updateScreen();
-		listenForTick();						
+		//listenForTick();						
 		listenForInput();
 	}
 	return 0;															// Won't be reached due to inifinite loop

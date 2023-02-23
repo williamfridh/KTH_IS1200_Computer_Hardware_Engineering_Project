@@ -49,11 +49,11 @@ void menuButtonTriggered(int buttonData) {
 
     switch (buttonData) {
     case (8):                                           // Button #4 (firt from the left)
-        setScreenCode(screen_code-1);                   // Navigate backward
+        //setScreenCode(screen_code-1);                   // Navigate backward
         break;
 
     case (4):                                           // Button #3 (second from the left)
-        setScreenCode(screen_code+1);                   // Navigate forward
+        //setScreenCode(screen_code+1);                   // Navigate forward
         break;
 
     case (2):                                           // Button #2 (third from the left)
