@@ -10,7 +10,7 @@
  * that is'nt directly connected to either the game or menu.
 */
 int screen_code = 0;
-int in_game = 0;
+bool in_game = false;
 
 
 
