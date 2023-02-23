@@ -1,5 +1,6 @@
 #include <stdint.h>								// Declarations of uint_32 and the like.
 #include <pic32mx.h>							// Declarations of system-specific addresses etc.
+#include <stdbool.h>							// Support for boolean
 
 
 
@@ -11,30 +12,6 @@
 */
 int screen_code = 0;
 bool in_game = false;
-
-
-
-/**
- * Main Function
- * 
- * The main function is called on startup and will continue
- * running infinite thanks to the while-loop.
-*/
-int main(void) {
-
-	// Debugging code
-	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
-	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
-
-  	TRISDSET = 0xf0;  	                 								// Set Buttons 1-4 as inputs 
-	timerInit();														// Initilize timer
-	while(1) {															// Inifinite loop for listening
-		updateScreen();
-		listenForTick();						
-		listenForInput();
-	}
-	return 0;															// Won't be reached due to inifinite loop
-}
 
 
 
@@ -61,9 +38,9 @@ void setScreenCode(int code) {
 */
 void updateScreen(void) {
 	if (in_game) {
-		renderGame();
+		//renderGame();
 	} else {
-		renderMenu();
+		//renderMenu();
 	}
 }
 
@@ -87,9 +64,33 @@ int getButtons(void){
 void listenForInput() {
 	int button_data = getButtons();
 	if (in_game) {
-		gameButtonTriggered(button_data);								// Send button data to the game button handler
+		//gameButtonTriggered(button_data);								// Send button data to the game button handler
 	} else {
-		menuButtonTriggered(button_data);								// Send button data to the menu button handler
+		//menuButtonTriggered(button_data);								// Send button data to the menu button handler
 	}
+}
+
+
+
+/**
+ * Main Function
+ * 
+ * The main function is called on startup and will continue
+ * running infinite thanks to the while-loop.
+*/
+int main(void) {
+
+	// Debugging code
+	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
+	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
+
+  	TRISDSET = 0xf0;  	                 								// Set Buttons 1-4 as inputs 
+	//timerInit();														// Initilize timer
+	while(1) {															// Inifinite loop for listening
+		updateScreen();
+		//listenForTick();						
+		listenForInput();
+	}
+	return 0;															// Won't be reached due to inifinite loop
 }
 
