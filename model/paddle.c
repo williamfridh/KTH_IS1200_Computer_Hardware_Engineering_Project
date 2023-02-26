@@ -1,7 +1,7 @@
 #include <stdint.h>
 
-static uint8_t model_paddle[][4] = {
-    {1, 1, 1, 1},
-    {1, 1, 1, 1}
+static uint8_t model_paddle[][8] = {
+    {1, 1, 1, 1 ,1 ,1 ,1 ,1},
+    {1, 1, 1, 1 ,1 ,1 ,1 ,1}
 };
 
