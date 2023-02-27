@@ -50,7 +50,7 @@ void updateScreen(void) {
  * Get Buttons
 */
 int getButtons(void){
-    return (PORTD & 0xe0) >> 4; 
+    return ((PORTD & 0xe0) >> 4) | ((PORTF & 0x2) >> 1);
 }
 
 
@@ -62,7 +62,9 @@ int getButtons(void){
  * this data and takes relevant action.
 */
 void listenForInput() {
+
 	int button_data = getButtons();
+
 	if (in_game) {
 		//gameButtonTriggered(button_data);								// Send button data to the game button handler
 	} else {
@@ -82,12 +84,14 @@ int main(void) {
 
 	// Debugging code
 	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
-	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
+	//*trise = *trise & 0xffffff0f;										// Set ports 0-7 as outputs
 
-  	TRISDSET = 0xf0;  	                 								// Set Buttons 1-4 as inputs 
+  	TRISDSET = 0xe0;  	                 								// Set buttons 2-4 as inputs 
+  	TRISFSET = 0x2;  	                 								// Set button 1 as inputs 
+
 	//timerInit();														// Initilize timer
 	while(1) {															// Inifinite loop for listening
-		updateScreen();
+		//updateScreen();
 		//listenForTick();						
 		listenForInput();
 	}
