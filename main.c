@@ -1,6 +1,10 @@
 #include <stdint.h>								// Declarations of uint_32 and the like.
 #include <pic32mx.h>							// Declarations of system-specific addresses etc.
 #include <stdbool.h>							// Support for boolean
+#include "menu.c"
+#include "shieldDisplay.c"
+#include "canvas.c"
+#include "model/startscreen.c"
 
 
 
@@ -40,7 +44,7 @@ void updateScreen(void) {
 	if (in_game) {
 		//renderGame();
 	} else {
-		//renderMenu();
+		renderMenu();
 	}
 }
 
@@ -89,9 +93,11 @@ int main(void) {
   	TRISDSET = 0xe0;  	                 								// Set buttons 2-4 as inputs 
   	TRISFSET = 0x2;  	                 								// Set button 1 as inputs 
 
+	initDisplay();														// Initilize display
+
 	//timerInit();														// Initilize timer
 	while(1) {															// Inifinite loop for listening
-		//updateScreen();
+		updateScreen();
 		//listenForTick();						
 		listenForInput();
 	}
