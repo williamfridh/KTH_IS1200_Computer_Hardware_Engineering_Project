@@ -15,14 +15,21 @@ Global values that holds data of the players and the balls position.
 Aswell as the score of the player. 
 */
 
-int x1 = 0;			//The initial positions of the padels. and the ball
-int y1 = 16;
-int x2 = 126;
-int y2 = 16;
-int bX = 64;
-int bY = 16;
+double paddleX1 = 2;			//The initial positions of the padels. and the ball
+double paddleY1 = 16;
+double paddleX2 = 126;
+double paddleY2 = 16;
+
+
+
+int ballX = 64;
+int ballY = 16;
+int ballAngle = 0;
+
 int p1Score = 0;
 int p2Score = 0;
+
+
 
 
 /*
@@ -31,12 +38,13 @@ trigger a certain action, in this case either make the
 player go down or up
 */
 void paintArena(){
-	canvasInsertModel(x1, y1, 2, 8, model_paddle, false);		//The left side padel 
-	canvasInsertModel(x2, y2, 2, 8, model_paddle, false);		//The right side padel 
+	canvasInsertModel(paddleX1, paddleY1, 2, 8, model_paddle, false);		//The left side padel 
+	canvasInsertModel(paddleX2, paddleY2, 2, 8, model_paddle, false);		//The right side padel 
 
 	canvasInsertModel(0, 0, 128, 32, model_map, true);			//The map
-	canvasInsertModel(bX, bY, 2, 2, model_ball, true);			//The ball
+	canvasInsertModel(ballX, ballY, 2, 2, model_ball, true);			//The ball
 }
+
 
 
 /**
@@ -65,75 +73,39 @@ bool upOrDown(int pos, int direction){
 
 void gameButtonTriggered(int buttonData) {
 
-	if(buttonData & 0x8 && upOrDown(y1, 1)){
-		y1++;
+	if(buttonData & 0x8 && upOrDown(paddleY1, 1)){
+		paddleY1++;
 	}
 
-	if(buttonData & 0x4 && upOrDown(y1, -1)){
-		y1--;
+	if(buttonData & 0x4 && upOrDown(paddleY1, -1)){
+		paddleY1--;
 	}
 	
-	if(buttonData & 0x2 && upOrDown(y2, 1)){
-		y2++;
+	if(buttonData & 0x2 && upOrDown(paddleY2, 1)){
+		paddleY2++;
 	}
 
-	if(buttonData & 0x1 && upOrDown(y2, -1)){
-		y2--;
+	if(buttonData & 0x1 && upOrDown(paddleY2, -1)){
+		paddleY2--;
 	}
 }
 
 
 
-/*
-Initilize Game Timer
-The game timer is used for keeping the game running at a certain speed.
-This timer will cause an interupt flag efter 100ms.
+/**
+ * Functions from ball_math.h is called to here
 */
-/*void gameTimerInit(void) {
-	T2CON = 0x70;											 			// Stopping timer and setting the prescaler to 1/256
-	PR2 = ((80000000 / 256)/ 10);			 							// Set the period for the timer
-	TMR2 = 0;													 		// Tick to PR2
+
+void playingGame(){
+	xBallSpeed(ballX);
+	yBallSpeed(ballY);
+	playerScore(p1Score, ballX);
+	playerScore(p2Score, ballX);
+	ballHit(ballX, ballY, ballAngle, paddleX1, paddleY1);		//Player 1
+	ballHit(ballX, ballY, ballAngle, paddleX2, paddleY2);		//Player 1
+
 }
 
-
-
-/*
-Start Game Timer
-*/
-/*void gameTimerStart(void) {
-	T2CONSET = 0x8000;													// Start timer
-}
-
-
-
-/*
-Stop Game Timer
-*/
-/*void gameTimerStop(void) {
-	T2CON = 0x70;											 			// Stopping timer and setting the prescaler to 1/256
-}
-
-
-
-/*
-Listen For Game Timer Tick
-This function is called repeatedly from
-the function main inside a inifinite loop.
-*/
-/*volatile int * porte = (volatile int *) 0xbf886110;						// Used for debugging ticks
-int timeoutCount = 0;													// A global counter used for slowing down the ticks
-int ledTime = 0;														// Used for debugging ticks 
-void listenForGameTimerTick(void) {
-	if (IFS(0) & 0x100) {												// Detect and interrupt flag
-		timeoutCount++;													// Increment global counter 
-		IFS(0) = 0;														// Clear flags
-		if (timeoutCount == 10) {										// If there as been 10 timeout event flags
-			timeoutCount = 0;
-			*porte = ledTime;											// Used for debugging ticks
-			ledTime++;													// Used for debugging ticks
-			/* ACTION STARTS */
-			// Add a function call here.
-			/* ACTION ENDS*/
 
 
 /**
@@ -141,9 +113,13 @@ void listenForGameTimerTick(void) {
  * the game state.
 */
 
+
+
 void renderGame(){
 		canvasClear();									//Clear the menu 
-		paintArena();									
+		paintArena();									//Paint the arena 					
+		playingGame();
+
 		const uint8_t* canvas_data = canvasGetData();	//Get the data from the canvas
   		sendDisplayData(canvas_data);					//Sending that data to the OLED display
 }
