@@ -1,4 +1,6 @@
-static unsigned int model_paddle[][4] = {
+#include <stdint.h>
+
+static uint8_t model_paddle[][4] = {
     {1, 1, 1, 1},
     {1, 1, 1, 1}
 };

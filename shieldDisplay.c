@@ -83,11 +83,10 @@ void initPins(){
 
 
 
-/*
-
+/**
+ * @param data - encoded data
 */
-
-void sendDisplayData(const uint8_t *data) {
+void sendDisplayData(const uint8_t *data, int width) {
     int i, j;
 
     for(i = 0; i < 4; i++){
@@ -100,8 +99,8 @@ void sendDisplayData(const uint8_t *data) {
 
         PORTFSET = 0x10;
 
-        for(j = 0; j < 64; j++){			// j < x is the width of the render. 
-            sendToBuf(~data[i*32 + j]);
+        for(j = 0; j < width; j++){			// j < x is the width of the render. 
+            sendToBuf(~data[i*width + j]);
         }
     }
 }

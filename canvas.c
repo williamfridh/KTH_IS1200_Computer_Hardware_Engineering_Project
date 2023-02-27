@@ -9,11 +9,11 @@
 /**
  * Data & Settings For The Canvas
 */
-#define DISPLAY_HEIGHT 16
-#define DISPLAY_WIDTH 64
+#define DISPLAY_HEIGHT 32
+#define DISPLAY_WIDTH 128
 #define DISPLAY_BYTES (DISPLAY_HEIGHT/8)*DISPLAY_WIDTH
 
-static unsigned int canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
+static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
 
 
 
@@ -108,7 +108,7 @@ void canvasInsertModel(
     int y,
     int modelWidth,
     int modelHeight,
-    unsigned int modelData[][modelHeight], 
+    uint8_t modelData[][modelHeight], 
     bool merge
 ) {
     for (int xx = 0; xx < modelWidth; xx++) {
@@ -131,9 +131,9 @@ void canvasInsertModel(
  * 
  * Return: An encoded version of the canvas that can be read by the display.
 */
-unsigned int* canvasGetData(void) {
+uint8_t* canvasGetData(void) {
 
-    static unsigned int canvas_encoded[DISPLAY_BYTES];
+    static uint8_t canvas_encoded[DISPLAY_BYTES];
 
     for (int i = 0; i < DISPLAY_BYTES; i++) canvas_encoded[i] = 255;
                 
@@ -164,7 +164,7 @@ unsigned int* canvasGetData(void) {
 int main(void) {
 
     canvasInsertModel(0, 0, 2, 4, model_paddle, false);
-    canvasInsertModel(10, 10, 2, 2, model_ball, false);
+    canvasInsertModel(63, 0, 2, 2, model_ball, false);
 
     for (int i = 0; i < DISPLAY_HEIGHT; i++) {
         for (int j = 0; j < DISPLAY_WIDTH; j++) {
@@ -179,7 +179,7 @@ int main(void) {
 
     printf("\n");
 
-    unsigned int* canvas_data = canvasGetData();
+    uint8_t* canvas_data = canvasGetData();
 
     for (int i = 0, t = 0; i < DISPLAY_BYTES; i++) {
         printf("%d, ", canvas_data[i]);

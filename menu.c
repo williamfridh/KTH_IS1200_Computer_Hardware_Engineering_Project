@@ -1,5 +1,9 @@
-extern int screen_code;
+#include <stdbool.h>							// Support for boolean
+#include "model/startscreen.c"
+#include "canvas.h"
+#include "shieldDisplay.h"
 
+extern int screen_code;
 
 
 /**
@@ -8,7 +12,9 @@ extern int screen_code;
  * Render menu based on the global variable screen_code.
 */
 void renderMenu(void) {
-
+    canvasInsertModel(0, 0, 128, 32, model_startscreen, false);
+    const uint8_t* canvas_data = canvasGetData();
+    sendDisplayData(canvas_data);
 }
 
 
@@ -22,7 +28,6 @@ void renderMenu(void) {
 void triggerOk(void) {
     switch (screen_code) {
     case (1):
-        /* code */
         break;
     
     default:
