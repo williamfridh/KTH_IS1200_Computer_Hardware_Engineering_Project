@@ -1,10 +1,8 @@
 #include <stdint.h>								// Declarations of uint_32 and the like.
 #include <pic32mx.h>							// Declarations of system-specific addresses etc.
 #include <stdbool.h>							// Support for boolean
-#include "menu.c"
-#include "shieldDisplay.c"
-#include "canvas.c"
-#include "model/startscreen.c"
+#include "menu.h"
+#include "shieldDisplay.h"
 
 
 
@@ -41,9 +39,16 @@ void setScreenCode(int code) {
  * correct render function based on that.
 */
 void updateScreen(void) {
+		// Debugging code
+	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
+	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
+	PORTE = 0xf;
+
+
 	if (in_game) {
 		//renderGame();
 	} else {
+		
 		renderMenu();
 	}
 }
@@ -86,20 +91,16 @@ void listenForInput() {
 */
 int main(void) {
 
-	// Debugging code
-	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
-	//*trise = *trise & 0xffffff0f;										// Set ports 0-7 as outputs
-
   	TRISDSET = 0xe0;  	                 								// Set buttons 2-4 as inputs 
   	TRISFSET = 0x2;  	                 								// Set button 1 as inputs 
 
-	initDisplay();														// Initilize display
-
+	initShield();														// Initilize display
 	//timerInit();														// Initilize timer
 	while(1) {															// Inifinite loop for listening
-		updateScreen();
+		
+	updateScreen();
 		//listenForTick();						
-		listenForInput();
+		//listenForInput();
 	}
 	return 0;															// Won't be reached due to inifinite loop
 }

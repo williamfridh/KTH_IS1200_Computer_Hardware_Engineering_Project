@@ -1,4 +1,7 @@
 #include <stdbool.h>							// Support for boolean
+#include "model/startscreen.c"
+#include "canvas.h"
+#include "shieldDisplay.h"
 
 extern int screen_code;
 
