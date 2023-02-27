@@ -14,3 +14,15 @@ int getCharLen(char *c) {
     return len;
 }
 
+
+
+/**
+ * A simple delay use
+ * 
+ * @param int d - amount of ticks that the loop will go through
+*/
+
+void delay(int ticks) {
+	int i;
+	for(i = d; i > 0; i--);
+}

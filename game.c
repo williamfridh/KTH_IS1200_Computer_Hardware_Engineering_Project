@@ -42,6 +42,7 @@ void paintArena(){
  * The function also makes bounderies for the padels.
  * @param pos			- Current position of padel 
  * @param direction 	- The direction where the padel is going 
+ * @return bool			- Whether the paddle is allowed to move or not. 
  * 
 */
 
