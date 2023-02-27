@@ -3,7 +3,7 @@
 #include <stdbool.h>							// Support for boolean
 #include "menu.h"
 #include "shieldDisplay.h"
-
+#include "game.h"
 
 
 /**
@@ -12,7 +12,7 @@
  * This section should hold the global settings and data
  * that is'nt directly connected to either the game or menu.
 */
-bool in_game = false;
+bool in_game = true;
 
 
 
@@ -24,7 +24,7 @@ bool in_game = false;
 */
 void updateScreen(void) {
 	if (in_game) {
-		//renderGame();
+		renderGame();
 	} else {
 		renderMenu();
 	}
@@ -57,7 +57,7 @@ void listenForInput() {
 	PORTE = button_data;
 
 	if (in_game) {
-		//gameButtonTriggered(button_data);								// Send button data to the game button handler
+		gameButtonTriggered(button_data);								// Send button data to the game button handler
 	} else {
 		menuButtonTriggered(button_data);								// Send button data to the menu button handler
 	}
