@@ -2,10 +2,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "canvas.h"
+#include "shieldDisplay.h"
+#include "ball_math.h"
 #include "model/ball.c"
 #include "model/map.c"
 #include "model/paddle.c"
-#include "shieldDisplay.h"
+
 
 /*
 Global values
@@ -141,10 +143,9 @@ void listenForGameTimerTick(void) {
 
 void renderGame(){
 		canvasClear();									//Clear the menu 
-		paintArena();									//
+		paintArena();									
 		const uint8_t* canvas_data = canvasGetData();	//Get the data from the canvas
   		sendDisplayData(canvas_data);					//Sending that data to the OLED display
-
 }
 
 
