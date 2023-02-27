@@ -1,8 +1,11 @@
 #include <stdint.h>								// Declarations of uint_32 and the like.
 #include <stdbool.h>							// Support for boolean
 #include <stdio.h>                              // Used for debugging
+#include "basicFunctions.h"
 #include "model/paddle.c"
 #include "model/ball.c"
+#include "model/font_big.c"
+#include "model/font_small.c"
 
 
 
@@ -12,6 +15,7 @@
 #define DISPLAY_HEIGHT 32
 #define DISPLAY_WIDTH 128
 #define DISPLAY_BYTES (DISPLAY_HEIGHT/8)*DISPLAY_WIDTH
+#define LETTER_SPACING 1
 
 static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
 
@@ -127,6 +131,47 @@ void canvasInsertModel(
 
 
 /**
+ * Write On Canvas
+ * 
+ * @param txt           - String to be printed on canvas
+ * @param x             - X position
+ * @param y             - Y position
+ * @param merge         - Determin if it should merge or not.
+ * @param large         - Print large letters if true, otherwise small
+ * 
+ * Note: Only capital letters A-Z are allowed.
+ * 
+ * This function takes in a string an prints it to the screen.
+ * It loads parts of a font model and creates a smaller model
+ * that it sends to canvasInsertModel.
+ * 
+ * Appart from this, it also cleares the area to be printed
+ * beforehand, if merge is set to false.
+*/
+void canvasWrite(char *txt, int x, int y, bool merge, bool large) {
+    const int size = large ? 8 : 5;
+    const int txt_len = getCharLen(txt);
+
+    if (!merge) {
+        const int textAreaWidth = size*txt_len+(txt_len-1)*LETTER_SPACING;         // Calculate text area width
+        canvasErase(x, y, textAreaWidth, size);                                        // Clear text area
+    }
+
+    for (int i = 0; i < txt_len; i++) {                                         // Loop characters
+        uint8_t char_model[size][size];                                                   // Create small model
+        for (int x = 0; x < size; x++) {
+            const int x_offset = (txt[i]-32)*size+x;                                   // Calculate x offset for reading font
+            for (int y = 0; y < size; y++) {
+                char_model[x][y] = large ? model_font_big[x_offset][y] : model_font_small[x_offset][y];                         // Add data to smaller model
+            }
+        }
+        canvasInsertModel(x+i*size+LETTER_SPACING*i, y, size, size, char_model, merge);      // Send data to canvasInsertmodel
+    }
+}
+
+
+
+/**
  * Get Encoded Canvas Data
  * 
  * Return: An encoded version of the canvas that can be read by the display.
@@ -137,16 +182,16 @@ uint8_t* canvasGetData(void) {
 
     for (int i = 0; i < DISPLAY_BYTES; i++) canvas_encoded[i] = 255;
                 
-    for (int i = 0, val = 1, byte_row = 0, col = 0; i < DISPLAY_BYTES; i++, val = 1, col++) {    // Loop that also sets values to be used
+    for (int i = 0, val = 1, byte_row = 0, col = 0; i < DISPLAY_BYTES; i++, val = 1, col++) {   // Loop that also sets values to be used
 
-        if (col == DISPLAY_WIDTH) {                                                         // If last column is reached
-            col = 0;                                                                        // Jump to first column again
+        if (col == DISPLAY_WIDTH) {                                                             // If last column is reached
+            col = 0;                                                                            // Jump to first column again
             byte_row++;
         }
 
-        for (int bit = 0; bit < 8; bit++) {                                                       // Loop 8 bits to be in byte
-            if (canvas[col][bit+byte_row*8] == 1) canvas_encoded[i] -= val;                        // Decrese byte value if the canvas cell is painted (=1)
-            val += val;                                                                     // Double val (1, 2, 4, 8, 16...)
+        for (int bit = 0; bit < 8; bit++) {                                                     // Loop 8 bits to be in byte
+            if (canvas[col][bit+byte_row*8] == 1) canvas_encoded[i] -= val;                     // Decrese byte value if the canvas cell is painted (=1)
+            val += val;                                                                         // Double val (1, 2, 4, 8, 16...)
         }
         
     }
@@ -160,11 +205,13 @@ uint8_t* canvasGetData(void) {
 /**
  * Main - For Debugging & Example
 */
-/*
-int main(void) {
+/*int main(void) {
 
-    canvasInsertModel(0, 0, 2, 4, model_paddle, false);
-    canvasInsertModel(63, 0, 2, 2, model_ball, false);
+    //canvasWrite("PONTUS: 1337", 0,0, false, true);
+    //canvasWrite("1234567890", 0,16, false, false);
+
+    //canvasInsertModel(0, 0, 2, 4, model_paddle, false);
+    //canvasInsertModel(63, 0, 2, 2, model_ball, false);
 
     for (int i = 0; i < DISPLAY_HEIGHT; i++) {
         for (int j = 0; j < DISPLAY_WIDTH; j++) {

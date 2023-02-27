@@ -5,13 +5,11 @@
 #include "shieldDisplay.h"
 
 
-extern int menuScreencode;
-
-
 
 /**
  * Settings
 */
+#define MAX_MENU_SCREEN_CODE 4
 int menuScreencode = 0;
 
 
@@ -22,10 +20,10 @@ int menuScreencode = 0;
  * This function checks the target screen code before setting it.
  */
 void setMenuScreenCode(int code) {
-	if (code < 1) {														// Make sure target code is positive.
-		return;
-	} else {
+	if (0 < code && code <= MAX_MENU_SCREEN_CODE) {
 		menuScreencode = code;
+	} else {
+		return;
 	}
 }
 
@@ -44,12 +42,22 @@ void renderMenu(void) {
 
         case (1):
             canvasClear();
-            canvasInsertModel(0, 0, 4, 2, model_paddle, false);
+            canvasWrite("PAGEONE", 0, 0, false, false);
             break;
 
         case (2):
             canvasClear();
-            canvasInsertModel(10, 0, 4, 2, model_paddle, false);
+            canvasWrite("PAGETWO", 0, 0, false, true);
+            break;
+
+        case (3):
+            canvasClear();
+            canvasWrite("PAGETHREE", 0, 0, false, false);
+            break;
+
+        case (4):
+            canvasClear();
+            canvasWrite("PAGEFOUR", 0, 0, false, false);
             break;
         
         default:
@@ -89,18 +97,18 @@ void triggerOk(void) {
  * Button 2: OK
 */
 void menuButtonTriggered(int buttonData) {
-    if (menuScreencode == 0 && buttonData > 0) {           // If landing screen and button is pressed
-        menuScreencode = 1;                                // Jump to screen #1
+    if (menuScreencode == 0 && buttonData > 0) {        // If landing screen and button is pressed
+        menuScreencode = 1;                             // Jump to screen #1
         return;                                         // Stop function
     }
 
     switch (buttonData) {
     case (8):                                           // Button #4 (firt from the left)
-        setMenuScreenCode(menuScreencode-1);                   // Navigate backward
+        setMenuScreenCode(menuScreencode-1);            // Navigate backward
         break;
 
     case (4):                                           // Button #3 (second from the left)
-        setMenuScreenCode(menuScreencode+1);                   // Navigate forward
+        setMenuScreenCode(menuScreencode+1);            // Navigate forward
         break;
 
     case (2):                                           // Button #2 (third from the left)
