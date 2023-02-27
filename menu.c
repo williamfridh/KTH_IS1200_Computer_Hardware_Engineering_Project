@@ -5,16 +5,56 @@
 #include "shieldDisplay.h"
 
 
-extern int screen_code;
+extern int menuScreencode;
+
+
+
+/**
+ * Settings
+*/
+int menuScreencode = 0;
+
+
+
+/**
+ * Set Menu Screen Code
+ * 
+ * This function checks the target screen code before setting it.
+ */
+void setMenuScreenCode(int code) {
+	if (code < 1) {														// Make sure target code is positive.
+		return;
+	} else {
+		menuScreencode = code;
+	}
+}
+
 
 
 /**
  * Render Menu
  * 
- * Render menu based on the global variable screen_code.
+ * Render menu based on the global variable menuScreencode.
 */
 void renderMenu(void) {
-    canvasInsertModel(0, 0, 128, 32, model_startscreen, false);
+    switch (menuScreencode) {
+        case (0):
+            canvasInsertModel(0, 0, 128, 32, model_startscreen, false);
+            break;
+
+        case (1):
+            canvasClear();
+            canvasInsertModel(0, 0, 4, 2, model_paddle, false);
+            break;
+
+        case (2):
+            canvasClear();
+            canvasInsertModel(10, 0, 4, 2, model_paddle, false);
+            break;
+        
+        default:
+            break;
+    }
     const uint8_t* canvas_data = canvasGetData();
     sendDisplayData(canvas_data);
 }
@@ -28,12 +68,12 @@ void renderMenu(void) {
  * The action will be based on the current screen code.
 */
 void triggerOk(void) {
-    switch (screen_code) {
-    case (1):
-        break;
-    
-    default:
-        break;
+    switch (menuScreencode) {
+        case (1):
+            break;
+        
+        default:
+            break;
     }
 }
 
@@ -49,18 +89,18 @@ void triggerOk(void) {
  * Button 2: OK
 */
 void menuButtonTriggered(int buttonData) {
-    if (screen_code == 0 && buttonData > 0) {           // If landing screen and button is pressed
-        screen_code = 1;                                // Jump to screen #1
+    if (menuScreencode == 0 && buttonData > 0) {           // If landing screen and button is pressed
+        menuScreencode = 1;                                // Jump to screen #1
         return;                                         // Stop function
     }
 
     switch (buttonData) {
     case (8):                                           // Button #4 (firt from the left)
-        //setScreenCode(screen_code-1);                   // Navigate backward
+        setMenuScreenCode(menuScreencode-1);                   // Navigate backward
         break;
 
     case (4):                                           // Button #3 (second from the left)
-        //setScreenCode(screen_code+1);                   // Navigate forward
+        setMenuScreenCode(menuScreencode+1);                   // Navigate forward
         break;
 
     case (2):                                           // Button #2 (third from the left)

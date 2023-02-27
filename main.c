@@ -12,23 +12,7 @@
  * This section should hold the global settings and data
  * that is'nt directly connected to either the game or menu.
 */
-int screen_code = 0;
 bool in_game = false;
-
-
-
-/**
- * Set Screen Code
- * 
- * This function checks the target screen code before setting it.
- */
-void setScreenCode(int code) {
-	if (code < 1) {														// Make sure target code is positive.
-		return;
-	} else {
-		screen_code = code;
-	}
-}
 
 
 
@@ -39,16 +23,9 @@ void setScreenCode(int code) {
  * correct render function based on that.
 */
 void updateScreen(void) {
-		// Debugging code
-	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
-	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
-	PORTE = 0xf;
-
-
 	if (in_game) {
 		//renderGame();
 	} else {
-		
 		renderMenu();
 	}
 }
@@ -74,10 +51,15 @@ void listenForInput() {
 
 	int button_data = getButtons();
 
+	// Debugging code
+	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
+	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
+	PORTE = button_data;
+
 	if (in_game) {
 		//gameButtonTriggered(button_data);								// Send button data to the game button handler
 	} else {
-		//menuButtonTriggered(button_data);								// Send button data to the menu button handler
+		menuButtonTriggered(button_data);								// Send button data to the menu button handler
 	}
 }
 
@@ -91,16 +73,20 @@ void listenForInput() {
 */
 int main(void) {
 
+	// Debugging code
+	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
+	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
+	PORTE = 0xf;
+
   	TRISDSET = 0xe0;  	                 								// Set buttons 2-4 as inputs 
   	TRISFSET = 0x2;  	                 								// Set button 1 as inputs 
 
 	initShield();														// Initilize display
 	//timerInit();														// Initilize timer
 	while(1) {															// Inifinite loop for listening
-		
-	updateScreen();
+		updateScreen();
 		//listenForTick();						
-		//listenForInput();
+		listenForInput();
 	}
 	return 0;															// Won't be reached due to inifinite loop
 }
