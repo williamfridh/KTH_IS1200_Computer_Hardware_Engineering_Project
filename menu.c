@@ -57,7 +57,8 @@ void renderMenu(void) {
 
         case (4):
             canvasClear();
-            canvasWrite("PAGEFOUR", 0, 0, false, false);
+            canvasWrite("1234567890", 0, 0, false, false);
+            canvasWrite("1234567890", 0, 16, false, true);
             break;
         
         default:
