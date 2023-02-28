@@ -6,6 +6,7 @@
 #include "model/ball.c"
 #include "model/font_big.c"
 #include "model/font_small.c"
+#include "model/menu_navigation.c"
 
 
 
@@ -207,10 +208,14 @@ uint8_t* canvasGetData(void) {
 /**
  * Main - For Debugging & Example
 */
-/*int main(void) {
+/*
+int main(void) {
+
+    canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
+    canvasWrite("BOARD", 40, 9, false, true);
 
     //canvasWrite("qwertyuiop", 0,0, false, true);
-    canvasWrite("QWERTYUIOP", 0,0, false, true);
+    //canvasWrite("QWERTYUIOP", 0,0, false, true);
 
     //canvasInsertModel(0, 0, 2, 4, model_paddle, false);
     //canvasInsertModel(63, 0, 2, 2, model_ball, false);
@@ -239,6 +244,6 @@ uint8_t* canvasGetData(void) {
         }
     }
 
-}*/
-
+}
+*/
 

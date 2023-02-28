@@ -7,6 +7,7 @@
 #include "mips.h"
 
 
+
 /**
  * Settings & Data
  * 
@@ -18,6 +19,15 @@ volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TR
 int ledVal = 0;														// Debugging
 int btn_lock = false;
 int btn_data;
+
+
+
+/**
+ * Set In Game
+*/
+void setInGame(bool newState) {
+	in_game = newState;
+}
 
 
 
