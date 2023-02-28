@@ -4,6 +4,7 @@
 #include "model/menu_navigation.c"
 #include "canvas.h"
 #include "shieldDisplay.h"
+#include "main.h"
 
 
 
@@ -43,7 +44,7 @@ void renderMenu(void) {
     switch (menuScreencode) {
         /* ======================================== START SCREEN ======================================== */
         case (0):
-            canvasInsertModel(0, 0, 128, 32, model_startscreen, true);
+            canvasInsertModel(0, 0, 128, 32, model_startscreen, false);
             break;
         /* ======================================== PLAYER VS AI ======================================== */
         case (1):

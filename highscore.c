@@ -10,7 +10,7 @@
  * holds each score, and the second one, holding 5 objects,
  * has three letters, player score, and AI score.
 */
-#define HIGHSCORE_AMOUNT 100                    // Max amount of highscores
+#define HIGHSCORE_AMOUNT 20                    // Max amount of highscores
 char initials[HIGHSCORE_AMOUNT][3];             // Holds initials inputed by the player
 int points[HIGHSCORE_AMOUNT][3];                // 0: player score & 1: ai score & 2: ratio
 
