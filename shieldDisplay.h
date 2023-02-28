@@ -1,7 +1,5 @@
 #include <pic32mx.h>
 
-void delay(int cyc) ;
-
 uint8_t sendToBuf(uint8_t data);
 
 void initDisplay();
