@@ -84,37 +84,6 @@ void gameButtonTriggered(int buttonData) {
 
 
 /*
-Initilize Game Timer
-The game timer is used for keeping the game running at a certain speed.
-This timer will cause an interupt flag efter 100ms.
-*/
-/*void gameTimerInit(void) {
-	T2CON = 0x70;											 			// Stopping timer and setting the prescaler to 1/256
-	PR2 = ((80000000 / 256)/ 10);			 							// Set the period for the timer
-	TMR2 = 0;													 		// Tick to PR2
-}
-
-
-
-/*
-Start Game Timer
-*/
-/*void gameTimerStart(void) {
-	T2CONSET = 0x8000;													// Start timer
-}
-
-
-
-/*
-Stop Game Timer
-*/
-/*void gameTimerStop(void) {
-	T2CON = 0x70;											 			// Stopping timer and setting the prescaler to 1/256
-}
-
-
-
-/*
 Listen For Game Timer Tick
 This function is called repeatedly from
 the function main inside a inifinite loop.

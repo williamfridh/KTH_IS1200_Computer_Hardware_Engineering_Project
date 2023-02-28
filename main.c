@@ -4,6 +4,7 @@
 #include "menu.h"
 #include "shieldDisplay.h"
 #include "game.h"
+#include "mips.h"
 
 
 /**
@@ -13,6 +14,10 @@
  * that is'nt directly connected to either the game or menu.
 */
 bool in_game = false;
+volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE (debugging)
+int ledVal = 0;														// Debugging
+int btn_lock = false;
+int btn_data;
 
 
 
@@ -33,34 +38,91 @@ void updateScreen(void) {
 
 
 /**
- * Get Buttons
+ * Set Button Data
+ * 
+ * This function handles the button data differently depending
+ * on the vale of the boolean in_game. It modifies the bits of
+ * btn_data and handles btn_lock if the user isn't in a game.
 */
-int getButtons(void){
-    return ((PORTD & 0xe0) >> 4) | ((PORTF & 0x2) >> 1);
+void setBtnData(void) {
+	const int current_btn_data = ((PORTD & 0xe0) >> 4) | ((PORTF & 0x2) >> 1);
+	if (in_game) {
+		btn_data = btn_data | current_btn_data;
+		btn_lock = false;
+	} else {
+		if (!btn_lock && current_btn_data) {
+			btn_data = btn_data | current_btn_data;
+			btn_lock = true;
+			PORTE = 0x80;
+		} else {
+			if (!current_btn_data) {
+				btn_lock = false;
+				PORTE = 0x00;
+			}
+		}
+	}
 }
 
 
 
 /**
- * Listen For Inputs
+ * Reset Button Data
  * 
- * This function calls getButtons, sorts
- * this data and takes relevant action.
+ * Resets the button data. Usually called from within handleBtnData.
 */
-void listenForInput() {
+void resetBtnData(void) {
+	btn_data = 0;
+}
 
-	int button_data = getButtons();
 
-	// Debugging code
-	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
-	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
-	PORTE = button_data;
 
+/**
+ * Handle Button Data
+ * 
+ * Decides what to do with the button data.
+ * Passes it forward to the relevant function.
+*/
+void handleBtnData() {
 	if (in_game) {
-		gameButtonTriggered(button_data);								// Send button data to the game button handler
+		gameButtonTriggered(btn_data);								// Send button data to the game button handler
 	} else {
-		menuButtonTriggered(button_data);								// Send button data to the menu button handler
+		menuButtonTriggered(btn_data);								// Send button data to the menu button handler
 	}
+}
+
+
+
+/**
+ * Interrupt Service Routine
+ * 
+ * This function detects and resets intruptflags.
+*/
+void user_isr(void) {
+	if(IFS(0) & 0x100){													// Check for relevant flag
+		IFS(0) = IFS(0) & 0xfffffeff;									// Reset interrupt flag
+		handleBtnData();												// Handle button data
+		updateScreen();													// Update screen
+		resetBtnData();													// Reset button data
+		//ledVal++;														// Debugging
+		//PORTE = ledVal;												// Debugging
+	}
+}
+
+
+
+/**
+ * Initilize Timer
+ * 
+ * Initilizes and configures the timer.
+*/
+void initTimer(void) {
+	T2CON = 0x70;                       								//Stopping timer and setting the prescaler to 1/256
+	PR2 = ((80000000 / 256)/ 10);       								//Setting the period for the timer
+	TMR2 = 0;                           								//Ticks to PR2
+	IECSET(0) = 0x100;                  								//Enable interrupts
+	IPC(2) = 0xC;                       								//Enable a interrupt priority
+	T2CONSET = 0x8000;                  								//Starting timer
+	enable_interrupt();
 }
 
 
@@ -73,21 +135,15 @@ void listenForInput() {
 */
 int main(void) {
 
-	// Debugging code
-	volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE
-	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs
-	PORTE = 0xf;
+	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs (debugging)
 
   	TRISDSET = 0xe0;  	                 								// Set buttons 2-4 as inputs 
-  	TRISFSET = 0x2;  	                 								// Set button 1 as inputs 
+  	TRISFSET = 0x2;  	                 								// Set button 1 as inputs
 
 	initShield();														// Initilize display
-	//timerInit();														// Initilize timer
-	while(1) {															// Inifinite loop for listening
-		updateScreen();
-		//listenForTick();						
-		listenForInput();
-	}
+	initTimer();														// Initilize timer
+
+	while(1) setBtnData();												// Inifinite loop for listening	for input	
 	return 0;															// Won't be reached due to inifinite loop
 }
 
