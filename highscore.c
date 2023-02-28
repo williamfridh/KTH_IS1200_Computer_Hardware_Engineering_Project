@@ -1,3 +1,6 @@
+/**
+ * Import Libraries
+*/
 #include <stdbool.h>							// Support for boolean
 #include <stdio.h>                              // Used for debugging
 
@@ -10,8 +13,8 @@
  * holds each score, and the second one, holding 5 objects,
  * has three letters, player score, and AI score.
 */
-#define HIGHSCORE_AMOUNT 20                    // Max amount of highscores
-char initials[HIGHSCORE_AMOUNT][3];             // Holds initials inputed by the player
+#define HIGHSCORE_AMOUNT 9                      // Max amount of highscores
+char initials[HIGHSCORE_AMOUNT][4];             // Holds initials inputed by the player
 int points[HIGHSCORE_AMOUNT][3];                // 0: player score & 1: ai score & 2: ratio
 
 
@@ -19,16 +22,18 @@ int points[HIGHSCORE_AMOUNT][3];                // 0: player score & 1: ai score
 /**
  * Add Highscore
  * 
- * @param char letter_one           - Letter to be stored
- * @param char letter_two           - Letter to be stored
- * @param char letter_three         - Letter to be stored
- * @param int player_one            - Scores by player one
- * @param int player_two            - Scores by player two
- * 
  * Inserts the new highscore with it's calculated ratio
  * into the array "initials" and "points". When doing so,
  * it also moves existing data so it remains sorted
  * (ratio in ascending order).
+ * 
+ * @param {char}            - Letter to be stored
+ * @param {char}            - Letter to be stored
+ * @param {char}            - Letter to be stored
+ * @param {int}             - Scores by player one
+ * @param {int}             - Scores by player two
+ * 
+ * @author Fridh, William
 */
 void addHighscore(
     char letter_one,
@@ -71,23 +76,58 @@ void addHighscore(
  *
  * Needs to be called at the start of the program
  * to empty the array of unwanted values.
+ * 
+ * @author Fridh, William
 */
 void initHighscore(void) {
     for (int i = 0; i < HIGHSCORE_AMOUNT; i++) {
-        for (int j = 0; j < 3; j++) {
-            initials[i][j] = 0;
+        for (int j = 0; j < 4; j++) {
+            initials[i][j] = '\0';
         }
         points[i][0] = 0;
         points[i][1] = 0;
         points[i][2] = 0;
     }
+    
+    addHighscore('A','B','C',5,2);
+    addHighscore('A','B','C',2,3);
+    addHighscore('A','B','C',7,4);
+    addHighscore('A','B','C',5,5);
+    addHighscore('A','B','C',3,6);
+    addHighscore('A','B','C',2,7);
+    addHighscore('A','B','C',6,8);
+    addHighscore('A','B','C',0,9);
+    addHighscore('A','B','C',9,0);
+    addHighscore('A','B','C',4,12);
+    addHighscore('W','I','L',20,3);
 }
+
+
+
+/**
+ * Get Highscore Initials
+*/
+char* getHighscoreInitials(int i) {
+    return initials[i];
+}
+
+
+
+/**
+ * Get Highscore Points
+*/
+int* getHighscorePoints(int i) {
+    return points[i];
+}
+
 
 
 /**
  * Main
  *
  * Used for debugging.
+ * 
+ * @author Fridh, William
 */
 /*
 int main(void) {
@@ -104,7 +144,7 @@ int main(void) {
     addHighscore('A','B','C',9,0);
     addHighscore('A','B','C',4,12);
     addHighscore('W','I','L',20,3);
-    for (int i = 0; i < HIGHSCORE_AMOUNT; i++) {
+    /*for (int i = 0; i < HIGHSCORE_AMOUNT; i++) {
         for (int j = 0; j < 3; j++) {
             printf("%c ", initials[i][j]);
         }
@@ -112,7 +152,10 @@ int main(void) {
         printf("|%d ", points[i][1]);
         printf("|%d ", points[i][2]);
         printf("\n");
-    }
+    }*/
+    /*printf("%s\n", getHighscoreInitials(0));
+    printf("%d\n", getHighscorePoints(0)[2]);
     return 0;
-}*/
+}
+*/
 

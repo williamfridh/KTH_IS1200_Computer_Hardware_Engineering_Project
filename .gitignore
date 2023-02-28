@@ -1,7 +1,10 @@
+# Author: Fridh, William
 *.c.o
 .deps
 *.elf
 *.hex
 .vscode/
-test
 *.S.o
+
+# Common test compile names
+test

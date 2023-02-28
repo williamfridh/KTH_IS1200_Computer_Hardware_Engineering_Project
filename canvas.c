@@ -1,12 +1,16 @@
+/**
+ * Include Libraries & models
+*/
 #include <stdint.h>								// Declarations of uint_32 and the like.
 #include <stdbool.h>							// Support for boolean
 #include <stdio.h>                              // Used for debugging
-#include "basicFunctions.h"
 #include "model/paddle.c"
 #include "model/ball.c"
 #include "model/font_big.c"
 #include "model/font_small.c"
 #include "model/menu_navigation.c"
+
+#include "basicFunctions.h"
 
 
 
@@ -30,6 +34,14 @@ static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
  * 
  * Warning: No not call this method if not via
  * a simpler function such as paint and erase.
+ * 
+ * @param {int}   - x position
+ * @param {int}   - y position
+ * @param {int}   - width in pixels
+ * @param {int}   - height in pixels
+ * @param {int}   - target value (0 or 1)
+ * 
+ * @author Fridh, William
 */
 void canvasAction(int x, int y, int width, int height, int val) {
 	for (int xx = 0; xx < width; xx++) {
@@ -46,6 +58,13 @@ void canvasAction(int x, int y, int width, int height, int val) {
  * 
  * Paints to the canvas trough a call to canvasAction().
  * This function can paint at a certain location and draw shapes.
+ * 
+ * @param {int}   - x position
+ * @param {int}   - y position
+ * @param {int}   - width in pixels
+ * @param {int}   - height in pixels
+ * 
+ * @author Fridh, William
 */
 void canvasPaint(int x, int y, int width, int height) {
 	canvasAction(x, y, width, height, 1);
@@ -59,6 +78,13 @@ void canvasPaint(int x, int y, int width, int height) {
  * Removes from the canvas via a call tol canvasAction().
  * This function removed from the canvas at a given location
  * and can do so in shapes.
+ * 
+ * @param {int}   - x position
+ * @param {int}   - y position
+ * @param {int}   - width in pixels
+ * @param {int}   - height in pixels
+ * 
+ * @author Fridh, William
 */
 void canvasErase(int x, int y, int width, int height) {
 	canvasAction(x, y, width, height, 0);
@@ -71,6 +97,8 @@ void canvasErase(int x, int y, int width, int height) {
  * 
  * Clear all values in the canvas. This can be used for quickly
  * clearing the display data before sending it to the display.
+ * 
+ * @author Fridh, William
 */
 void canvasClear() {
 	for (int x = 0; x < DISPLAY_WIDTH; x++) {
@@ -84,6 +112,13 @@ void canvasClear() {
 
 /**
  * Check If Pixel In Location
+ * 
+ * @param {int}   - x position
+ * @param {int}   - y position
+ * 
+ * @return {bool} - true if the pixel is in the location
+ * 
+ * @author Fridh, William
 */
 bool ifPixelIsFilled(int x, int y) {
     if (canvas[x][y] == 1) {
@@ -98,15 +133,16 @@ bool ifPixelIsFilled(int x, int y) {
 /**
  * Insert Model
  * 
- * Inserting a model onto the canvas required the following arugments:
- * @param x             - x offset
- * @param y             - y offset
- * @param modelWidth    - width of the model
- * @param modelHeight   - height of the model
- * @param modelData     - two-dimensional array of the model
- * @param merge         - boolean for deciding merging
- * 
  * Note: Flipping the modelWidth and moderlHeight arguments results in a flipped model.
+ * 
+ * @param {int}           - x offset
+ * @param {int}           - y offset
+ * @param {int}           - width of the model
+ * @param {int}           - height of the model
+ * @param {uint8_t[][]}   - two-dimensional array of the model
+ * @param {bool}          - boolean for deciding merging
+ * 
+ * @author Fridh, William
 */
 void canvasInsertModel(
     int x,
@@ -134,12 +170,6 @@ void canvasInsertModel(
 /**
  * Write On Canvas
  * 
- * @param txt           - String to be printed on canvas
- * @param x             - X position
- * @param y             - Y position
- * @param merge         - Determin if it should merge or not.
- * @param big           - Print big letters if true, otherwise small
- * 
  * Note: font models are stores in a 1D array.
  * 
  * This function takes in a string an prints it to the screen.
@@ -148,6 +178,14 @@ void canvasInsertModel(
  * 
  * Appart from this, it also cleares the area to be printed
  * beforehand, if merge is set to false.
+ * 
+ * @param {char*}        - String to be printed on canvas
+ * @param {int}          - X position
+ * @param {int}          - Y position
+ * @param {bool}         - Determin if it should merge or not.
+ * @param {bool}         - Print big letters if true, otherwise small
+ * 
+ * @author Fridh, William
 */
 void canvasWrite(char *txt, int x, int y, bool merge, bool big) {
 
@@ -178,6 +216,8 @@ void canvasWrite(char *txt, int x, int y, bool merge, bool big) {
  * Get Encoded Canvas Data
  * 
  * Return: An encoded version of the canvas that can be read by the display.
+ * 
+ * @author Fridh, William
 */
 uint8_t* canvasGetData(void) {
 
@@ -207,6 +247,8 @@ uint8_t* canvasGetData(void) {
 
 /**
  * Main - For Debugging & Example
+ * 
+ * @author Fridh, William
 */
 /*
 int main(void) {

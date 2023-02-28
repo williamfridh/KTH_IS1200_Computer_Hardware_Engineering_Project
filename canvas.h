@@ -1,6 +1,7 @@
-#include <pic32mx.h>
-
-void canvasAction(int x, int y, int width, int height, int val);
+/**
+ * @author Fridh, William
+*/
+#include <stdint.h>
 
 void canvasPaint(int x, int y, int width, int height);
 

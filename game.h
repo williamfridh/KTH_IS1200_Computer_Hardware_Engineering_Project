@@ -1,4 +1,6 @@
-
+/**
+ * @author Åhlins, Pontus
+*/
 
 void renderGame();
 

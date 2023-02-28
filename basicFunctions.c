@@ -1,9 +1,9 @@
 /**
  * Get Char Length
  * 
- * @param char c - char array to calculate length of
- * 
- * @return int - length of char array
+ * @param {char}    - char array to calculate length of
+ * @return {int}    - length of char array
+ * @author Fridh, William
 */
 int getCharLen(char *c) {
     int len = 0;
@@ -19,9 +19,10 @@ int getCharLen(char *c) {
 /**
  * A simple delay use
  * 
- * @param int d - amount of ticks that the loop will go through
+ * @param {int} - amount of ticks that the loop will go through
+ * 
+ * @author Åhlin, Pontus
 */
-
 void delay(int ticks) {
 	int i;
 	for(i = ticks; i > 0; i--);

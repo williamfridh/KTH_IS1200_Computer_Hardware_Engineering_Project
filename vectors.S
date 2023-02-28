@@ -1,7 +1,8 @@
-  # vectors.S
-  # This file written 2015 by Axel Isaksson
-  # Modified 2015 by F Lundevall
-  # For copyright and licensing, see file COPYING
+# vectors.S
+# Source: https://github.com/is1200-example-projects/hello-temperature
+# This file written 2015 by Axel Isaksson
+# Modified 2015 by F Lundevall
+# For copyright and licensing, see file COPYING
 
 .macro movi reg, val
 	lui \reg, %hi(\val)

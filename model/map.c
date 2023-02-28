@@ -1,3 +1,6 @@
+/**
+ * @author Åhlin, Pontus
+*/
 #include <stdint.h>
 
 static uint8_t model_map[][32] = {
