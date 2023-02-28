@@ -137,32 +137,34 @@ void canvasInsertModel(
  * @param x             - X position
  * @param y             - Y position
  * @param merge         - Determin if it should merge or not.
- * @param large         - Print large letters if true, otherwise small
+ * @param big           - Print big letters if true, otherwise small
  * 
- * Note: Only capital letters A-Z are allowed.
+ * Note: font models are stores in a 1D array.
  * 
  * This function takes in a string an prints it to the screen.
- * It loads parts of a font model and creates a smaller model
- * that it sends to canvasInsertModel.
+ * It loads a font model and converts the correct data from it
+ * into a 2D array which is sent to canvasInsertModel.
  * 
  * Appart from this, it also cleares the area to be printed
  * beforehand, if merge is set to false.
 */
-void canvasWrite(char *txt, int x, int y, bool merge, bool large) {
-    const int size = large ? 8 : 5;
-    const int txt_len = getCharLen(txt);
+void canvasWrite(char *txt, int x, int y, bool merge, bool big) {
+
+    uint8_t *model_font = big ? model_font_big : model_font_small;                          // Determin font model
+    const int size = big ? 8 : 5;                                                           // Determin size
+    const int txt_len = getCharLen(txt);                                                    // get text length
 
     if (!merge) {
-        const int textAreaWidth = size*txt_len+(txt_len-1)*LETTER_SPACING;         // Calculate text area width
-        canvasErase(x, y, textAreaWidth, size);                                        // Clear text area
+        const int textAreaWidth = size*txt_len+(txt_len-1)*LETTER_SPACING;                  // Calculate text area width
+        canvasErase(x, y, textAreaWidth, size);                                             // Clear text area
     }
 
-    for (int i = 0; i < txt_len; i++) {                                         // Loop characters
-        uint8_t char_model[size][size];                                                   // Create small model
+    for (int i = 0; i < txt_len; i++) {                                                     // Loop characters
+        uint8_t char_model[size][size];                                                     // Create small model
         for (int x = 0; x < size; x++) {
-            const int x_offset = (txt[i]-32)*size+x;                                   // Calculate x offset for reading font
-            for (int y = 0; y < size; y++) {
-                char_model[x][y] = large ? model_font_big[x_offset][y] : model_font_small[x_offset][y];                         // Add data to smaller model
+            const int x_offset = (txt[i]-32)*size+x;                                        // Calculate x offset for reading font
+            for (int i = (size-1), j = 1; i >= 0; i--, j = j*2) {
+                char_model[x][i] = model_font[x_offset] & j ? 1 : 0;
             }
         }
         canvasInsertModel(x+i*size+LETTER_SPACING*i, y, size, size, char_model, merge);      // Send data to canvasInsertmodel
@@ -207,8 +209,8 @@ uint8_t* canvasGetData(void) {
 */
 /*int main(void) {
 
-    //canvasWrite("PONTUS: 1337", 0,0, false, true);
-    //canvasWrite("1234567890", 0,16, false, false);
+    //canvasWrite("qwertyuiop", 0,0, false, true);
+    canvasWrite("QWERTYUIOP", 0,0, false, true);
 
     //canvasInsertModel(0, 0, 2, 4, model_paddle, false);
     //canvasInsertModel(63, 0, 2, 2, model_ball, false);

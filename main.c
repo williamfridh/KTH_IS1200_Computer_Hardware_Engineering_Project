@@ -12,7 +12,7 @@
  * This section should hold the global settings and data
  * that is'nt directly connected to either the game or menu.
 */
-bool in_game = true;
+bool in_game = false;
 
 
 
