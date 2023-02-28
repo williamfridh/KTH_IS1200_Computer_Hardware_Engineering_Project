@@ -1,6 +1,7 @@
 #include <stdbool.h>							// Support for boolean
 #include "model/startscreen.c"
 #include "model/paddle.c"
+#include "model/menu_navigation.c"
 #include "canvas.h"
 #include "shieldDisplay.h"
 
@@ -9,8 +10,8 @@
 /**
  * Settings
 */
-#define MAX_MENU_SCREEN_CODE 4
 int menuScreencode = 0;
+int screenCodes[] = {0,1,2,3,10,11,20,30,31};
 
 
 
@@ -20,11 +21,13 @@ int menuScreencode = 0;
  * This function checks the target screen code before setting it.
  */
 void setMenuScreenCode(int code) {
-	if (0 < code && code <= MAX_MENU_SCREEN_CODE) {
-		menuScreencode = code;
-	} else {
-		return;
-	}
+    if (code == 0) return;
+    for (int i = 0; i < sizeof(screenCodes); i++) {
+        if (screenCodes[i] == code) {
+            menuScreencode = code;
+            break;
+        }
+    }
 }
 
 
@@ -35,30 +38,39 @@ void setMenuScreenCode(int code) {
  * Render menu based on the global variable menuScreencode.
 */
 void renderMenu(void) {
+    canvasClear();
+    canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
     switch (menuScreencode) {
+        /* ======================================== START SCREEN ======================================== */
         case (0):
-            canvasInsertModel(0, 0, 128, 32, model_startscreen, false);
+            canvasInsertModel(0, 0, 128, 32, model_startscreen, true);
             break;
-
+        /* ======================================== PLAYER VS AI ======================================== */
         case (1):
-            canvasClear();
-            canvasWrite("PAGEONE", 0, 0, false, false);
+            canvasWrite("PLAY VS. AI", 15, 9, false, true);
             break;
-
+        case (10):
+            canvasWrite("DIFFICULTY", 16, 9, false, true);
+            break;
+        case (11):
+            canvasWrite("START", 40, 9, false, true);
+            break;  
+        /* ======================================== PLAYER VS PLAYER ======================================== */
         case (2):
-            canvasClear();
-            canvasWrite("PAGETWO", 0, 0, false, true);
+            canvasWrite("PVP", 50, 9, false, true);
             break;
-
+        case (20):
+            canvasWrite("START", 40, 9, false, true);
+            break;
+        /* ======================================== HIGHSCORE ======================================== */
         case (3):
-            canvasClear();
-            canvasWrite("PAGETHREE", 0, 0, false, false);
+            canvasWrite("HIGHSCORE", 22, 9, false, true);
             break;
-
-        case (4):
-            canvasClear();
-            canvasWrite("1234567890", 0, 0, false, false);
-            canvasWrite("1234567890", 0, 16, false, true);
+        case (30):
+            canvasWrite("BOARD", 40, 9, false, true);
+            break;
+        case (31):
+            canvasWrite("RESET", 40, 9, false, true);
             break;
         
         default:
@@ -79,10 +91,30 @@ void renderMenu(void) {
 void triggerOk(void) {
     switch (menuScreencode) {
         case (1):
+            setMenuScreenCode(10);
+            break;
+            
+        case (2):
+            setMenuScreenCode(10);
+            break;
+
+        case (3):
+            setMenuScreenCode(10);
+            break;
+
+        case (11):
+        case (20):
+            setInGame(true);
             break;
         
         default:
             break;
+    }
+}
+
+void triggerBack(void) {
+    if (menuScreencode > 9) {
+        setMenuScreenCode(menuScreencode % 10);
     }
 }
 
@@ -104,25 +136,25 @@ void menuButtonTriggered(int buttonData) {
     }
 
     switch (buttonData) {
-    case (8):                                           // Button #4 (firt from the left)
-        setMenuScreenCode(menuScreencode-1);            // Navigate backward
-        break;
+        case (8):                                           // Button #4 (firt from the left)
+            setMenuScreenCode(menuScreencode-1);            // Navigate backward
+            break;
 
-    case (4):                                           // Button #3 (second from the left)
-        setMenuScreenCode(menuScreencode+1);            // Navigate forward
-        break;
+        case (4):                                           // Button #3 (second from the left)
+            setMenuScreenCode(menuScreencode+1);            // Navigate forward
+            break;
 
-    case (2):                                           // Button #2 (third from the left)
-        triggerOk();                                    // Trigger ok-click.
-        break;
+        case (2):                                           // Button #2 (third from the left)
+            triggerOk();                                    // Trigger ok-click.
+            break;
 
-    case (1):                                           // Button #1 (fourth from the left)
-        /* code */
-        break;
-    
-    default:
-        // Can be removed.
-        break;
+        case (1):                                           // Button #1 (fourth from the left)
+            triggerBack();                                  // Trigger back-click.
+            break;
+        
+        default:
+            // Can be removed.
+            break;
     }
 }
 

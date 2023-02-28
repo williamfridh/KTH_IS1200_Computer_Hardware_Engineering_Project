@@ -1,0 +1,1 @@
+void setInGame(bool newState);
