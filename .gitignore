@@ -4,3 +4,4 @@
 *.hex
 .vscode/
 test
+*.S.o
