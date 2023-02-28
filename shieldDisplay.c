@@ -1,16 +1,6 @@
 #include <pic32mx.h>
 #include <stdint.h>
-    
-
-
-/*
-A simple delay used in the initialisation process of the code 
-*/
-
-void delay(int cyc) {
-	int i;
-	for(i = cyc; i > 0; i--);
-}
+#include "basicFunctions.h"
 
 
 
@@ -19,7 +9,7 @@ A very important function of the program that sends data to the data buffer.
 This function is responsible for being able to communicate with the display  
 */
 
-uint8_t sendToBuf(uint8_t data) {           //THIS WAS TAKEN FROM THE HELLO-DISPLAY EXAMPLE PROVIDED BY https://github.com/is1200-example-projects/hello-display/blob/master/main.c#L9
+uint8_t sendToBuf(uint8_t data) {           //THIS  CODE WAS TAKEN FROM THE HELLO-DISPLAY EXAMPLE PROVIDED BY https://github.com/is1200-example-projects/hello-display/blob/master/main.c#L9
 	while(!(SPI2STAT & 0x08));              //Wait for buffer to be ready
 	SPI2BUF = data;                         //Write to next transmit byte
 	while(!(SPI2STAT & 0x01));              //Wait for the received byte 

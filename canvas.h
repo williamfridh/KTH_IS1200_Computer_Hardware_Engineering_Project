@@ -10,6 +10,8 @@ void canvasClear();
 
 bool ifPixelIsFilled(int x, int y);
 
+void canvasWrite(char *txt, int x, int y, bool merge, bool large);
+
 void canvasInsertModel(
     int x,
     int y,
