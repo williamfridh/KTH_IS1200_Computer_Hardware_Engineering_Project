@@ -282,11 +282,13 @@ void drawButtonDescBar(bool left_arrow, bool right_arrow, bool ok, bool back) {
  * Main - For Debugging & Example
  * 
  * @author Fridh, William
-*/
-/*
+*//*
 int main(void) {
 
-    drawButtonDescBar(false, false, false, true);
+    char t[] = {getInputChar(0), getInputChar(1), getInputChar(2)};
+    canvasWrite(t, SMALL_TEXTLINE_TWO, 9, false, true);
+
+    //drawButtonDescBar(false, false, false, true);
 
     //canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
     //canvasWrite("BOARD", 40, 9, false, true);
@@ -321,6 +323,6 @@ int main(void) {
         }
     }
 
-}
-*/
+}*/
+
 

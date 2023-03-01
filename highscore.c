@@ -16,6 +16,7 @@
 #define HIGHSCORE_AMOUNT 9                      // Max amount of highscores
 char initials[HIGHSCORE_AMOUNT][4];             // Holds initials inputed by the player
 int points[HIGHSCORE_AMOUNT][3];                // 0: player score & 1: ai score & 2: ratio
+char inputData[3] = {'A','B','C'};
 
 
 
@@ -130,9 +131,10 @@ int* getHighscorePoints(int i) {
  * 
  * @author Fridh, William
 */
-/*
-int main(void) {
+
+/*int main(void) {
     initHighscore();
+    /*
     for (int i = 0; i < HIGHSCORE_AMOUNT; i++) {
         for (int j = 0; j < 3; j++) {
             printf("%c ", initials[i][j]);
@@ -144,7 +146,9 @@ int main(void) {
     }
     printf("%s\n", getHighscoreInitials(0));
     printf("%d\n", getHighscorePoints(0)[2]);
+    */
+   /*printf("%c\n", (char)getInputChar(0));
     return 0;
-}
-*/
+}*/
+
 

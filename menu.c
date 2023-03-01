@@ -21,8 +21,8 @@
 /**
  * Settings
 */
-int menuScreencode = 0;
-int screenCodes[] = {0,1,2,3,10,11,20,30};
+int menuScreencode = 36;
+int screenCodes[] = {0, 1, 2, 3, 10, 11, 20, 30, 36, 37, 38, 39};
 
 
 
@@ -56,6 +56,9 @@ void setMenuScreenCode(int code) {
  * @author Fridh, William
 */
 void renderMenu(void) {
+
+    char* t = (char*)inputData[0];
+
     canvasClear();
     switch (menuScreencode) {
         /* ======================================== START SCREEN ======================================== */
@@ -134,6 +137,29 @@ void renderMenu(void) {
             canvasWrite(getHighscoreInitials(8), 90, SMALL_TEXTLINE_THREE, false, false);
 
             drawButtonDescBar(false, false, false, true);
+            break;
+
+        case (36): // Enter first letter
+
+            //canvasWrite("ENTER HIGHSCORE", 0, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite(t, 54, SMALL_TEXTLINE_TWO, false, true);
+            //canvasWrite((char*)&inputDataArray[1], 62, SMALL_TEXTLINE_TWO, false, false);
+            //canvasWrite((char*)&inputDataArray[2], 70, SMALL_TEXTLINE_TWO, false, false);
+
+
+            drawButtonDescBar(false, true, true, false);
+            break;
+        case (37): // Enter second letter
+            canvasWrite("ENTER HIGHSCORE", SMALL_TEXTLINE_ONE, 9, false, false);
+            drawButtonDescBar(true, true, true, false);
+            break;
+        case (38): // Enter third letter
+            canvasWrite("ENTER HIGHSCORE", SMALL_TEXTLINE_ONE, 9, false, false);
+            drawButtonDescBar(true, true, true, false);
+            break;
+        case (39): // Finish
+            canvasWrite("ENTER HIGHSCORE", SMALL_TEXTLINE_ONE, 9, false, false);
+            drawButtonDescBar(true, false, true, false);
             break;
         
         default:
