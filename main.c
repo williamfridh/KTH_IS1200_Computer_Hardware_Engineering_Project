@@ -140,7 +140,7 @@ int main(void) {
 
   	TRISDSET = 0xe0;  	                 								// Set buttons 2-4 as inputs 
   	TRISFSET = 0x2;  	                 								// Set button 1 as inputs
-
+initArena(); // tmp
 	initShield();														// Initilize display
 	initTimer();														// Initilize timer
 

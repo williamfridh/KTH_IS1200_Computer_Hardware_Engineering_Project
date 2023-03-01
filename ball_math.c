@@ -6,10 +6,11 @@
 #include <pic32mx.h>
 #include <math.h>
 #include <stdbool.h>
+#include "game.h"
 
 #define PI 3.141592654
 #define PADDLE_HEIGHT 8.0
-#define NEAR_PI (17*PI)/18
+#define NEAR_PI (12*PI)/18
 
 
 
@@ -26,8 +27,12 @@ void moveBall(double *ballX, double *ballY, double ballAngle){
 
 
 /**
+ * Caclculate new Angle Of Edge Hit
+ * 
  * If the ball hits the map it will bounce 
- * with 45 degrees
+ * with 45 degrees.
+ * 
+ * @param {double} ball angle
  *
  * @author Åhlin, Pontus
 */
@@ -39,13 +44,13 @@ void ballCalcMapAngle(double *ballAngle){
 
 /**
  * If Ball Hits Paddle In Y Axis
- * @param {double}  - ball angle in rads
- * @param {double}  - ball paddle y cordinate
+ * @param {double} - ball angle in rads
+ * @param {double} - ball paddle y cordinate
  *
  * @author Åhlin, Pontus
 */
 bool ifVerticalPaddleHit(double ballCordY, int paddleCordY) {
-    return (nearbyint(ballCordY) >= paddleCordY-1) && nearbyint(ballCordY) <= (paddleCordY + PADDLE_HEIGHT+1);
+    return (nearbyint(ballCordY) >= paddleCordY-1) && nearbyint(ballCordY) <= (paddleCordY + PADDLE_HEIGHT);
 }
 
 
@@ -64,64 +69,101 @@ bool ifVerticalPaddleHit(double ballCordY, int paddleCordY) {
  * @authot Åhlins, Pontus 
 */
 void checkEdgeHit(double ballCordY, double *ballAngle) {
-    if (ballCordY <= 2 || ballCordY >= 28) {                                                   //Boundaries for the arena
+    if (ballCordY <= 2 || ballCordY >= 28) {                // Boundaries for the arena
         ballCalcMapAngle(ballAngle);
     }
-}   
-// 0-1
-double calcHitY(double ballCordY, int paddleCordY) {
-    double t = (ballCordY - paddleCordY)/PADDLE_HEIGHT;
-    return 4*t*t-4*t+1;
 }
+
+
+
+/**
+ * Calculate A Hit Y
+ * 
+ * A Hit Y is a value [0, 1] that is represents where
+ * on the paddle the ball hit. The value is used for
+ * determining what type of calculations to take next
+ * and will later be sent to scaleHitY or similar function.
+ * 
+ * @param {double} ball y cordinate
+ * @param {int} paddle y cordinate
+ * 
+ * @return {double} calculated value
+ * 
+ * @author Fridh, William
+*/
+double calcHitY(double ballCordY, int paddleCordY) {
+    return (ballCordY - paddleCordY+1)/PADDLE_HEIGHT;
+}
+
+
+
+/**
+ * Calculate Scaled Hit Y
+ * 
+ * Returns a scaled value from the formula 2t^2-2t+0.5
+ * This is used for a exponentail angle change
+ * towards the edges of the paddles.
+ * 
+ * @param {double} value to recalculate
+ * 
+ * @return {double} recalculated value [0, 0.5]
+ * 
+ * @author Fridh, William
+*/
+double scaleHitY(double t) {
+    return 2*t*t-2*t+0.5;
+}
+
+
 
 void checkLeftPaddleHit(double ballCordX, double ballCordY, double* ballAngle, int paddleCordX, int paddleCordY){  
     if (ifVerticalPaddleHit(ballCordY, paddleCordY) && (ballCordX < (paddleCordX + 2))) { 
         double hitY = calcHitY(ballCordY, paddleCordY);                          //Checks where the ball hits the paddle 
         if (hitY == 0.5) {                                                      //Center hit 
-            *ballAngle += PI;    
+            *ballAngle = 0;    
         } else if (hitY < 0.5) {                                                //Upper hit 
-            *ballAngle = NEAR_PI * (0.5-hitY);
+            *ballAngle = NEAR_PI * scaleHitY(hitY);
         } else if (hitY > 0.5) {                                                //Lower hit   
-            *ballAngle = 2*PI + (0.5-hitY)*NEAR_PI;
+            *ballAngle = 2*PI - scaleHitY(hitY)*NEAR_PI;
         }        
-    }
+    }   
 }
 
 void checkRightPaddleHit(double ballCordX, double ballCordY, double* ballAngle, int paddleCordX, int paddleCordY){  
     if(ifVerticalPaddleHit(ballCordY, paddleCordY) && (ballCordX >= (paddleCordX - 1))){                              
         double hitY = calcHitY(ballCordY, paddleCordY);                  //Checks where the ball hits the paddle 
         if (hitY == 0.5){                                            //Center hit 
-            *ballAngle += PI;    
+            *ballAngle = PI;    
         } else if(hitY < 0.5){                                        //Upper hit 
-            *ballAngle = PI - NEAR_PI * (0.5-hitY);
+            *ballAngle = PI - NEAR_PI * scaleHitY(hitY);
         } else if(hitY > 0.5){                                        //Lower hit   
-            *ballAngle = PI + (hitY)*NEAR_PI;
+            *ballAngle = PI + scaleHitY(hitY)*NEAR_PI;
         }        
     }
 }
 
 
 
-
-/*
-
-
-void checkPlayerOneScore(int *playerScore, double ballCordX, double ballCordY){
-    if(ballCordX == 0){
-        (*playerScore)++;
-        ballCordY = 16;
-        ballCordX = 64;
-    }
-}
-
-
-
-void checkPlayerTwoScore(int *playerScore, double ballCordX, double ballCordY){
-    if(ballCordX == 128){
-        (*playerScore)++;
-        ballCordY = 16;
-        ballCordX = 64;
-
-    }
-}
+/**
+ * Check Player Score
+ * 
+ * Checks if the ball is in any of the players goal.
+ * If so, it increases the correct players score
+ * and calls for a reset of the arena.
+ * 
+ * @param {int} player one score
+ * @param {int} player two score
+ * @param {doube} ball x cordinate
+ * 
+ * @author Åhlin, Pontus
 */
+void checkPlayerScore(int *playerOneScore, int* playerTwoScore, double ballCordX) {
+    if (ballCordX > 128.0) {
+        (*playerOneScore)++;
+        initArena();
+    }
+    if (ballCordX < 0.0) {
+        (*playerTwoScore)++;
+        initArena();
+    }
+}
