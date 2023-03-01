@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "canvas.h"
 #include "shieldDisplay.h"
+#include "game.h"
 #include "main.h"
 #include "highscore.h"
 
@@ -66,10 +67,22 @@ void renderMenu(void) {
             canvasWrite("PLAY VS. AI", 15, 9, false, true);
             drawButtonDescBar(false, true, true, false);
             break;
+
         case (10):
-            canvasWrite("DIFFICULTY", 16, 9, false, true);
+            switch(getDifficultySetting()) {
+                case(0):
+                    canvasWrite("DIFFICULTY: EASY", 15, SMALL_TEXTLINE_TWO, false, false);
+                    break;
+                case(1):
+                    canvasWrite("DIFFICULTY: MEDIUM", 15, SMALL_TEXTLINE_TWO, false, false);
+                    break;
+                case(2):
+                    canvasWrite("DIFFICULTY: HARD", 15, SMALL_TEXTLINE_TWO, false, false);
+                    break;
+            }
             drawButtonDescBar(true, true, true, true);
             break;
+
         case (11):
             canvasWrite("START", 40, 9, false, true);
             drawButtonDescBar(true, true, true, true);
@@ -120,7 +133,7 @@ void renderMenu(void) {
             canvasWrite("9:", 78, SMALL_TEXTLINE_THREE, false, false);
             canvasWrite(getHighscoreInitials(8), 90, SMALL_TEXTLINE_THREE, false, false);
 
-            drawButtonDescBar(false, false, false, false);
+            drawButtonDescBar(false, false, false, true);
             break;
         
         default:
@@ -154,8 +167,17 @@ void triggerOk(void) {
             setMenuScreenCode(30);
             break;
 
+        case(10):
+            toggleDifficultySetting();
+            break;
+
         case (11):
+            initArena();
+            setInGame(true);
+            break;
+
         case (20):
+            initArena();
             setInGame(true);
             break;
         
