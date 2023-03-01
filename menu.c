@@ -9,7 +9,6 @@
 
 #include "model/startscreen.c"
 #include "model/paddle.c"
-#include "model/menu_navigation.c"
 
 
 
@@ -52,7 +51,6 @@ void setMenuScreenCode(int code) {
 */
 void renderMenu(void) {
     canvasClear();
-    canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
     switch (menuScreencode) {
         /* ======================================== START SCREEN ======================================== */
         case (0):
@@ -61,23 +59,29 @@ void renderMenu(void) {
         /* ======================================== PLAYER VS AI ======================================== */
         case (1):
             canvasWrite("PLAY VS. AI", 15, 9, false, true);
+            drawButtonDescBar(false, false, true, false);
             break;
         case (10):
             canvasWrite("DIFFICULTY", 16, 9, false, true);
+            drawButtonDescBar(true, true, true, true);
             break;
         case (11):
             canvasWrite("START", 40, 9, false, true);
+            drawButtonDescBar(true, true, true, true);
             break;  
         /* ======================================== PLAYER VS PLAYER ======================================== */
         case (2):
             canvasWrite("PVP", 50, 9, false, true);
+            drawButtonDescBar(true, true, true, true);
             break;
         case (20):
             canvasWrite("START", 40, 9, false, true);
+            drawButtonDescBar(true, true, true, true);
             break;
         /* ======================================== HIGHSCORE ======================================== */
         case (3):
             canvasWrite("HIGHSCORE", 22, 9, false, true);
+            drawButtonDescBar(false, false, false, true);
             break;
         case (30):
             canvasWrite("1:", 0, SMALL_TEXTLINE_ONE, false, false);
@@ -111,6 +115,7 @@ void renderMenu(void) {
             canvasWrite("9:", 78, SMALL_TEXTLINE_THREE, false, false);
             canvasWrite(getHighscoreInitials(8), 90, SMALL_TEXTLINE_THREE, false, false);
 
+            drawButtonDescBar(false, false, false, false);
             break;
         
         default:
