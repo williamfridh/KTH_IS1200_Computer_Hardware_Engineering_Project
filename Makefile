@@ -18,6 +18,8 @@ DEVICE		= 32MX320F128H
 TTYDEV		?=/dev/ttyUSB0
 TTYBAUD		?=115200
 
+
+
 # Name of the project
 PROGNAME	= outfile
 
@@ -26,8 +28,8 @@ LINKSCRIPT	:= p$(shell echo "$(DEVICE)" | tr '[:upper:]' '[:lower:]').ld
 
 # Compiler and linker flags
 CFLAGS		+= -ffreestanding -march=mips32r2 -msoft-float -Wa,-msoft-float -std=c99
-ASFLAGS		+= -msoft-float
-LDFLAGS		+= -T $(LINKSCRIPT)
+ASFLAGS		+= -msoft-float 
+LDFLAGS		+= -T $(LINKSCRIPT) -lm
 
 # Filenames
 ELFFILE		= $(PROGNAME).elf
