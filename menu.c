@@ -80,36 +80,36 @@ void renderMenu(void) {
             canvasWrite("HIGHSCORE", 22, 9, false, true);
             break;
         case (30):
-            canvasWrite("1:", 0, 0, false, false);
-            canvasWrite(getHighscoreInitials(0), 12, 0, false, false);
+            canvasWrite("1:", 0, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite(getHighscoreInitials(0), 12, SMALL_TEXTLINE_ONE, false, false);
 
-            canvasWrite("2:", 0, 8, false, false);
-            canvasWrite(getHighscoreInitials(1), 12, 8, false, false);
+            canvasWrite("2:", 0, SMALL_TEXTLINE_TWO, false, false);
+            canvasWrite(getHighscoreInitials(1), 12, SMALL_TEXTLINE_TWO, false, false);
 
-            canvasWrite("3:", 0, 16, false, false);
-            canvasWrite(getHighscoreInitials(2), 12, 16, false, false);
+            canvasWrite("3:", 0, SMALL_TEXTLINE_THREE, false, false);
+            canvasWrite(getHighscoreInitials(2), 12, SMALL_TEXTLINE_THREE, false, false);
 
             canvasPaint(33, 0, 1, 21);
             
-            canvasWrite("4:", 36, 0, false, false);
-            canvasWrite(getHighscoreInitials(3), 48, 0, false, false);
+            canvasWrite("4:", 36, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite(getHighscoreInitials(3), 48, SMALL_TEXTLINE_ONE, false, false);
 
-            canvasWrite("5:", 36, 8, false, false);
-            canvasWrite(getHighscoreInitials(4), 48, 8, false, false);
+            canvasWrite("5:", 36, SMALL_TEXTLINE_TWO, false, false);
+            canvasWrite(getHighscoreInitials(4), 48, SMALL_TEXTLINE_TWO, false, false);
 
-            canvasWrite("6:", 36, 16, false, false);
-            canvasWrite(getHighscoreInitials(5), 48, 16, false, false);
+            canvasWrite("6:", 36, SMALL_TEXTLINE_THREE, false, false);
+            canvasWrite(getHighscoreInitials(5), 48, SMALL_TEXTLINE_THREE, false, false);
 
             canvasPaint(72, 0, 1, 21);
             
-            canvasWrite("7:", 78, 0, false, false);
-            canvasWrite(getHighscoreInitials(6), 90, 0, false, false);
+            canvasWrite("7:", 78, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite(getHighscoreInitials(6), 90, SMALL_TEXTLINE_ONE, false, false);
 
-            canvasWrite("8:", 78, 8, false, false);
-            canvasWrite(getHighscoreInitials(7), 90, 8, false, false);
+            canvasWrite("8:", 78, SMALL_TEXTLINE_TWO, false, false);
+            canvasWrite(getHighscoreInitials(7), 90, SMALL_TEXTLINE_TWO, false, false);
 
-            canvasWrite("9:", 78, 16, false, false);
-            canvasWrite(getHighscoreInitials(8), 90, 16, false, false);
+            canvasWrite("9:", 78, SMALL_TEXTLINE_THREE, false, false);
+            canvasWrite(getHighscoreInitials(8), 90, SMALL_TEXTLINE_THREE, false, false);
 
             break;
         
@@ -207,11 +207,11 @@ void menuButtonTriggered(int buttonData) {
 
     switch (buttonData) {
         case (8):                                           // Button #4 (firt from the left)
-            setMenuScreenCode(menuScreencode-1);     // Navigate backward
+            setMenuScreenCode(menuScreencode-1);            // Navigate backward
             break;
 
         case (4):                                           // Button #3 (second from the left)
-            setMenuScreenCode(menuScreencode+1);     // Navigate forward
+            setMenuScreenCode(menuScreencode+1);            // Navigate forward
             break;
 
         case (2):                                           // Button #2 (third from the left)

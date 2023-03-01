@@ -10,7 +10,8 @@
 #include "model/font_small.c"
 #include "model/menu_navigation.c"
 
-#include "basicFunctions.h"
+//#include "basicFunctions.h"                     // Used in production
+#include "basicFunctions.c"                     // Used for debugging
 
 
 
@@ -21,6 +22,10 @@
 #define DISPLAY_WIDTH 128
 #define DISPLAY_BYTES (DISPLAY_HEIGHT/8)*DISPLAY_WIDTH
 #define LETTER_SPACING 1
+#define SMALL_TEXTLINE_ONE 0
+#define SMALL_TEXTLINE_TWO 9
+#define SMALL_TEXTLINE_THREE 18
+#define SMALL_TEXTLINE_FOUR 27
 
 static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
 
@@ -250,11 +255,19 @@ uint8_t* canvasGetData(void) {
  * 
  * @author Fridh, William
 */
-/*
 int main(void) {
 
-    canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
-    canvasWrite("BOARD", 40, 9, false, true);
+    canvasWrite("<<", 5, SMALL_TEXTLINE_FOUR, false, false);
+    canvasWrite(">>", 35, SMALL_TEXTLINE_FOUR, false, false);
+    canvasWrite("OK", 70, SMALL_TEXTLINE_FOUR, false, false);
+    canvasWrite("BACK", 100, SMALL_TEXTLINE_FOUR, false, false);
+    canvasPaint(0, 25, 128, 1);
+    canvasPaint(22, 26, 1, 6);
+    canvasPaint(57, 26, 1, 6);
+    canvasPaint(92, 26, 1, 6);
+
+    //canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
+    //canvasWrite("BOARD", 40, 9, false, true);
 
     //canvasWrite("qwertyuiop", 0,0, false, true);
     //canvasWrite("QWERTYUIOP", 0,0, false, true);
@@ -287,5 +300,4 @@ int main(void) {
     }
 
 }
-*/
 
