@@ -53,11 +53,11 @@ void setBtnData(void) {
 		if (!btn_lock && current_btn_data) {
 			btn_data = btn_data | current_btn_data;
 			btn_lock = true;
-			PORTE = 0x80;
+			//PORTE = 0x80;
 		} else {
 			if (!current_btn_data) {
 				btn_lock = false;
-				PORTE = 0x00;
+				//PORTE = 0x00;
 			}
 		}
 	}
@@ -117,7 +117,7 @@ void user_isr(void) {
 */
 void initTimer(void) {
 	T2CON = 0x70;                       								//Stopping timer and setting the prescaler to 1/256
-	PR2 = ((80000000 / 256)/ 10);       								//Setting the period for the timer
+	PR2 = ((40000000 / 256)/ 10);       								//Setting the period for the timer
 	TMR2 = 0;                           								//Ticks to PR2
 	IECSET(0) = 0x100;                  								//Enable interrupts
 	IPC(2) = 0xC;                       								//Enable a interrupt priority
@@ -134,6 +134,7 @@ void initTimer(void) {
  * running infinite thanks to the while-loop.
 */
 int main(void) {
+    PORTE = 0;
 
 	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs (debugging)
 

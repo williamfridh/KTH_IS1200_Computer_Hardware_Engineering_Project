@@ -5,11 +5,14 @@
 #include "canvas.h"
 #include "shieldDisplay.h"
 #include "ball_math.h"
+
 #include "model/ball.c"
 #include "model/map.c"
 #include "model/paddle.c"
 
 #define PI 3.141592654
+#define PADDLE_HEIGHT 8.0
+
 
 
 /*
@@ -18,16 +21,16 @@ Global values that holds data of the players and the balls position.
 Aswell as the score of the player. 
 */
 
-double paddleX1 = 4;			//The initial positions of the padels. and the ball
-double paddleY1 = 16;
-double paddleX2 = 122;
-double paddleY2 = 16;
+int paddleX1 = 4;			//The initial positions of the padels. and the ball
+int paddleY1 = 16;
+int paddleX2 = 122;
+int paddleY2 = 17;
 
 
 
 double ballX = 64;
 double ballY = 16;
-double ballAngle = (PI);		//Made with RADS
+double ballAngle = 0;		//Made with RADS
 
 int playerOneScore = 0;
 int playerTwoScore = 0;
@@ -119,15 +122,16 @@ void playingGame(){
  * The function that main calls when we want to load in
  * the game state.
 */
-
-
-
 void renderGame(){
-		canvasClear();												//Clear the menu 
+		canvasClear();															//Clear the menu 
 		moveBall(&ballX, &ballY, ballAngle);
-		paintArena();												//Paint the arena 					
-		checkBallHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);			//Check player 1 paddle hit 
-		//checkBallHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
+		paintArena();															//Paint the arena 	
+		checkEdgeHit(ballY, &ballAngle);		
+		checkLeftPaddleHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
+		checkRightPaddleHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
+		//checkPlayerOneScore(playerOneScore, ballX, ballY);
+		//checkPlayerTwoScore(playerTwoScore, ballX, ballY);
+
 
 		const uint8_t* canvas_data = canvasGetData();				//Get the data from the canvas
   		sendDisplayData(canvas_data);								//Sending that data to the OLED display
@@ -135,16 +139,16 @@ void renderGame(){
 
 
 
-int getPlayerOneScore(){
+int getPlayerOneScore(void) {
 	return playerOneScore;
 }
 
 
-int getPlayerTwoScore(){
+int getPlayerTwoScore(void) {
 	return playerOneScore;
 }
 
-int getDifficultySetting(){
+int getDifficultySetting(void) {
 	return difficulty; 
 }
 
