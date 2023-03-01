@@ -117,6 +117,11 @@ double scaleHitY(double t) {
 
 
 
+/** 
+ * Two function that if there is a hit, on the left paddle or the right paddle, 
+*/
+
+
 void checkLeftPaddleHit(double ballCordX, double ballCordY, double* ballAngle, int paddleCordX, int paddleCordY){  
     if (ifVerticalPaddleHit(ballCordY, paddleCordY) && (ballCordX < (paddleCordX + 2))) { 
         double hitY = calcHitY(ballCordY, paddleCordY);                          //Checks where the ball hits the paddle 
@@ -144,7 +149,6 @@ void checkRightPaddleHit(double ballCordX, double ballCordY, double* ballAngle, 
 }
 
 
-
 /**
  * Check Player Score
  * 
@@ -159,13 +163,15 @@ void checkRightPaddleHit(double ballCordX, double ballCordY, double* ballAngle, 
  * @author Åhlin, Pontus
 */
 void checkPlayerScore(int *playerOneScore, int* playerTwoScore, double ballCordX) {
-    if (ballCordX > 128.0) {
-        (*playerOneScore)++;
-        initArena();
-        
+    if (ballCordX > 127.0) {
+        (*playerOneScore)++;                //Points to the player score, increments the value where it is pointing 
+        resetArena();
     }
     if (ballCordX < 0.0) {
         (*playerTwoScore)++;
-        initArena();
+        resetArena();
     }
 }
+
+
+
