@@ -81,31 +81,26 @@ void addHighscore(
 */
 void initHighscore(void) {
     for (int i = 0; i < HIGHSCORE_AMOUNT; i++) {
-        for (int j = 0; j < 4; j++) {
-            initials[i][j] = '\0';
-        }
+        initials[i][0] = '-';
+        initials[i][1] = '-';
+        initials[i][2] = '-';
+        initials[i][3] = '\0';
         points[i][0] = 0;
         points[i][1] = 0;
         points[i][2] = 0;
     }
-    
-    addHighscore('A','B','C',5,2);
-    addHighscore('A','B','C',2,3);
-    addHighscore('A','B','C',7,4);
-    addHighscore('A','B','C',5,5);
-    addHighscore('A','B','C',3,6);
-    addHighscore('A','B','C',2,7);
-    addHighscore('A','B','C',6,8);
-    addHighscore('A','B','C',0,9);
-    addHighscore('A','B','C',9,0);
-    addHighscore('A','B','C',4,12);
-    addHighscore('W','I','L',20,3);
 }
 
 
 
 /**
  * Get Highscore Initials
+ * 
+ * @param {int}         - index in highscorelist
+ * 
+ * @return {char*}      - array of three initials
+ * 
+ * @author Fridh, William
 */
 char* getHighscoreInitials(int i) {
     return initials[i];
@@ -115,6 +110,12 @@ char* getHighscoreInitials(int i) {
 
 /**
  * Get Highscore Points
+ * 
+ * @param {int}         - index in highscorelist
+ * 
+ * @return {0}          - array of scores
+ * 
+ * @author Fridh, William
 */
 int* getHighscorePoints(int i) {
     return points[i];
@@ -132,19 +133,7 @@ int* getHighscorePoints(int i) {
 /*
 int main(void) {
     initHighscore();
-    addHighscore('A','B','C',1,1);
-    addHighscore('A','B','C',5,2);
-    addHighscore('A','B','C',2,3);
-    addHighscore('A','B','C',7,4);
-    addHighscore('A','B','C',5,5);
-    addHighscore('A','B','C',3,6);
-    addHighscore('A','B','C',2,7);
-    addHighscore('A','B','C',6,8);
-    addHighscore('A','B','C',0,9);
-    addHighscore('A','B','C',9,0);
-    addHighscore('A','B','C',4,12);
-    addHighscore('W','I','L',20,3);
-    /*for (int i = 0; i < HIGHSCORE_AMOUNT; i++) {
+    for (int i = 0; i < HIGHSCORE_AMOUNT; i++) {
         for (int j = 0; j < 3; j++) {
             printf("%c ", initials[i][j]);
         }
@@ -152,8 +141,8 @@ int main(void) {
         printf("|%d ", points[i][1]);
         printf("|%d ", points[i][2]);
         printf("\n");
-    }*/
-    /*printf("%s\n", getHighscoreInitials(0));
+    }
+    printf("%s\n", getHighscoreInitials(0));
     printf("%d\n", getHighscorePoints(0)[2]);
     return 0;
 }

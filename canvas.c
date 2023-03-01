@@ -10,7 +10,8 @@
 #include "model/font_small.c"
 #include "model/menu_navigation.c"
 
-#include "basicFunctions.h"
+//#include "basicFunctions.h"                     // Used in production
+#include "basicFunctions.c"                     // Used for debugging
 
 
 
@@ -21,6 +22,10 @@
 #define DISPLAY_WIDTH 128
 #define DISPLAY_BYTES (DISPLAY_HEIGHT/8)*DISPLAY_WIDTH
 #define LETTER_SPACING 1
+#define SMALL_TEXTLINE_ONE 0
+#define SMALL_TEXTLINE_TWO 9
+#define SMALL_TEXTLINE_THREE 18
+#define SMALL_TEXTLINE_FOUR 27
 
 static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
 
@@ -246,6 +251,33 @@ uint8_t* canvasGetData(void) {
 
 
 /**
+ * Draw Button Description Bar
+ * 
+ * A bar that describes each button for the user.
+ * Should be used for the menu.
+ * 
+ * @param {bool}    - whether the left arrow should be visible
+ * @param {bool}    - whether the right arrow should be visible
+ * @param {bool}    - whether the OK text arrow should be visible
+ * @param {bool}    - whether the BACK text should be visible
+ * 
+ * @author Fridh, William
+*/
+void drawButtonDescBar(bool left_arrow, bool right_arrow, bool ok, bool back) {
+    if (left_arrow) canvasWrite("<<", 5, SMALL_TEXTLINE_FOUR, false, false);
+    if (right_arrow) canvasWrite(">>", 35, SMALL_TEXTLINE_FOUR, false, false);
+    if (left_arrow) canvasWrite("OK", 70, SMALL_TEXTLINE_FOUR, false, false);
+    if (back) canvasWrite("BACK", 100, SMALL_TEXTLINE_FOUR, false, false);
+
+    canvasPaint(0, 25, 128, 1);
+    canvasPaint(22, 26, 1, 6);
+    canvasPaint(57, 26, 1, 6);
+    canvasPaint(92, 26, 1, 6);
+}
+
+
+
+/**
  * Main - For Debugging & Example
  * 
  * @author Fridh, William
@@ -253,8 +285,10 @@ uint8_t* canvasGetData(void) {
 /*
 int main(void) {
 
-    canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
-    canvasWrite("BOARD", 40, 9, false, true);
+    drawButtonDescBar(false, false, false, true);
+
+    //canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
+    //canvasWrite("BOARD", 40, 9, false, true);
 
     //canvasWrite("qwertyuiop", 0,0, false, true);
     //canvasWrite("QWERTYUIOP", 0,0, false, true);

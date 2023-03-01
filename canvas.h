@@ -13,6 +13,8 @@ bool ifPixelIsFilled(int x, int y);
 
 void canvasWrite(char *txt, int x, int y, bool merge, bool large);
 
+void drawButtonDescBar(bool left_arrow, bool right_arrow, bool ok, bool back);
+
 void canvasInsertModel(
     int x,
     int y,
