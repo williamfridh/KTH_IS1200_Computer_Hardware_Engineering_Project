@@ -13,7 +13,7 @@
  * This section should hold the global settings and data
  * that is'nt directly connected to either the game or menu.
 */
-bool in_game = false;
+bool in_game = true;
 volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE (debugging)
 int ledVal = 0;														// Debugging
 int btn_lock = false;

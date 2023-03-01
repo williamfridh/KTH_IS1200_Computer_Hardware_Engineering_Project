@@ -1,12 +1,15 @@
 #include <pic32mx.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <math.h>
 #include "canvas.h"
 #include "shieldDisplay.h"
 #include "ball_math.h"
 #include "model/ball.c"
 #include "model/map.c"
 #include "model/paddle.c"
+
+#define PI 3.141592654
 
 
 /*
@@ -15,19 +18,23 @@ Global values that holds data of the players and the balls position.
 Aswell as the score of the player. 
 */
 
-double paddleX1 = 2;			//The initial positions of the padels. and the ball
+double paddleX1 = 4;			//The initial positions of the padels. and the ball
 double paddleY1 = 16;
-double paddleX2 = 126;
+double paddleX2 = 122;
 double paddleY2 = 16;
 
 
 
-int ballX = 64;
-int ballY = 16;
-int ballAngle = 0;
+double ballX = 64;
+double ballY = 16;
+double ballAngle = (3*PI/4);		//Made with RADS
 
-int p1Score = 0;
-int p2Score = 0;
+int playerOneScore = 0;
+int playerTwoScore = 0;
+
+int difficulty = 0;				//The difficulty will range from 0-2, where 0 is easiest.
+
+
 
 
 
@@ -41,7 +48,7 @@ void paintArena(){
 	canvasInsertModel(paddleX1, paddleY1, 2, 8, model_paddle, false);		//The left side padel 
 	canvasInsertModel(paddleX2, paddleY2, 2, 8, model_paddle, false);		//The right side padel 
 
-	canvasInsertModel(0, 0, 128, 32, model_map, true);			//The map
+	canvasInsertModel(0, 0, 128, 32, model_map, true);					//The map
 	canvasInsertModel(ballX, ballY, 2, 2, model_ball, true);			//The ball
 }
 
@@ -97,12 +104,12 @@ void gameButtonTriggered(int buttonData) {
 */
 
 void playingGame(){
-	xBallSpeed(ballX);
-	yBallSpeed(ballY);
-	playerScore(p1Score, ballX);
-	playerScore(p2Score, ballX);
-	ballHit(ballX, ballY, ballAngle, paddleX1, paddleY1);		//Player 1
-	ballHit(ballX, ballY, ballAngle, paddleX2, paddleY2);		//Player 1
+
+	//ballHit(ballX, ballY, ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
+	//ballHit(ballX, ballY, ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit
+	//checkPlayerOneScore(playerOneScore, ballX);
+	//checkPlayerTwoScore(playerTwoScore, ballX);
+
 
 }
 
@@ -116,14 +123,36 @@ void playingGame(){
 
 
 void renderGame(){
-		canvasClear();									//Clear the menu 
-		paintArena();									//Paint the arena 					
-		playingGame();
+		canvasClear();												//Clear the menu 
+		moveBall(&ballX, &ballY, ballAngle);
+		paintArena();												//Paint the arena 					
+		checkBallHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
+		checkBallHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
 
-		const uint8_t* canvas_data = canvasGetData();	//Get the data from the canvas
-  		sendDisplayData(canvas_data);					//Sending that data to the OLED display
+		const uint8_t* canvas_data = canvasGetData();				//Get the data from the canvas
+  		sendDisplayData(canvas_data);								//Sending that data to the OLED display
 }
 
+
+
+int getPlayerOneScore(){
+	return playerOneScore;
+}
+
+
+int getPlayerTwoScore(){
+	return playerOneScore;
+}
+
+int getDifficultySetting(){
+	return difficulty; 
+}
+
+
+void toggleDifficultySetting(){
+
+
+}
 
 
 
