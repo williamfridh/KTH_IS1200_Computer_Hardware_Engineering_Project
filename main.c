@@ -14,7 +14,7 @@
  * @link https://github.com/williamFridh
  * 
  * @author Åhlin Pontus
- * @link https://github.com/BerryAA
+ * @link https://github.com/PontusAhlin
 */
 
 /**
