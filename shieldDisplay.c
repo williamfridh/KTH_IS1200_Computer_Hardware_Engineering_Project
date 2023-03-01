@@ -4,12 +4,16 @@
 
 
 
-/*
-A very important function of the program that sends data to the data buffer.
-This function is responsible for being able to communicate with the display  
+/**
+* A very important function of the program that sends data to the data buffer.
+* This function is responsible for being able to communicate with the display  
+* 
+* We studied the example code below and wrote our own version
+* to enable the OLED display 
+* @link https://github.com/is1200-example-projects/hello-display/blob/master/main.c#L9
 */
 
-uint8_t sendToBuf(uint8_t data) {           //THIS  CODE WAS TAKEN FROM THE HELLO-DISPLAY EXAMPLE PROVIDED BY https://github.com/is1200-example-projects/hello-display/blob/master/main.c#L9
+uint8_t sendToBuf(uint8_t data) {           
 	while(!(SPI2STAT & 0x08));              //Wait for buffer to be ready
 	SPI2BUF = data;                         //Write to next transmit byte
 	while(!(SPI2STAT & 0x01));              //Wait for the received byte 
@@ -19,7 +23,7 @@ uint8_t sendToBuf(uint8_t data) {           //THIS  CODE WAS TAKEN FROM THE HELL
 
 
 /*
-This part of the code is used to initiate the display/buttons.
+* This part of the code is used to initiate the display/buttons.
 */
 
 void initDisplay(){
@@ -34,7 +38,7 @@ void initDisplay(){
     sendToBuf(0xAE);            //Turns on the display   
     PORTGCLR = 0x200;           //Something with RG9
     delay(10);
-    PORTGSET = 0x200;           //Not needed 
+    PORTGSET = 0x200;            
     delay(10);
 
     
@@ -59,16 +63,17 @@ void initDisplay(){
 }
 
 
-
+/**
+* This function 
+*/
 void initPins(){
-	/* Output pins for display signals */
+	
 	TRISFCLR = 0x70;			//0111 0000		sets bits (index) 4-6 to 0(outputs) in portF
 	TRISGCLR = 0x200;			//0010 0000 0000	sets bit (index) 9 to 0(output) in PORTG
 		
     SPI2CONSET = 0x60;		    //0110 0000 Turns on MSTEN(Master mode) and CKP(Clock polarity select)
 	
-	/* Turn on SPI */
-	SPI2CONSET = 0x8000;		//1000 0000 0000 0000
+	SPI2CONSET = 0x8000;		//1000 0000 0000 0000  Turns on SPI(communication with the shield)
 }
 
 
@@ -95,7 +100,9 @@ void sendDisplayData(const uint8_t *data) {
     }
 }
 
-
+/**
+ * Initialises the OLED
+*/
 
 void initShield(){
 
