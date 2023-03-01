@@ -6,7 +6,6 @@
 #define PI 3.141592654
 
 
-
 /**
  * Determining the speed of the ball
 */
@@ -40,13 +39,14 @@ void ballCalcMapAngle(double *ballAngle){
 
 
 
-bool leftPaddleHit(double ballCordX, double ballCordY, int paddleCordX, int paddleCordY, int paddleHeight){
+bool leftPaddleHit(double ballCordX, double ballCordY, int paddleCordX, int paddleCordY){
     if(ballCordX <= (paddleCordX + 1)){                                                 //Checking if the paddle should hit 
         if((ballCordY >= paddleCordY) && (ballCordY <= (paddleCordY + 8))){
+            PORTE = 0x1;
             return true;
         }
-    }
-    else{
+    } else {
+        PORTE = 0x4;
         return false;
     }
 }
@@ -106,15 +106,26 @@ void checkBallHit(double ballCordX, double ballCordY, double* ballAngle, int pad
         ballCalcMapAngle(ballAngle);
     }
     */
-    
-   if(leftPaddleHit(ballCordX, ballCordY, paddleCordX, paddleCordY, 8)){               // 8 = the paddle pixel height         
-        //ballHitCalc(ballCordX, ballCordY, ballAngle, paddleCordX, paddleCordY, 8);
-            *ballAngle = (2*PI);
+
+    if(leftPaddleHit(ballCordX, ballCordY, paddleCordX, paddleCordY))
+    {
+        PORTE = 0x8;
+        *ballAngle = 2*PI;
 
     }
-
-     
-
+   /*
+   if(leftPaddleHit(ballCordX, ballCordY, paddleCordX, paddleCordY)){               // 8 = the paddle pixel height         
+        PORTE = 0x8;
+            *ballAngle = (2*PI);
+   }
+   */
+/*
+     if(ballCordX <= (paddleCordX + 1)){                                                 //Checking if the paddle should hit 
+        if((ballCordY >= paddleCordY) && (ballCordY <= (paddleCordY + 8))){
+            *ballAngle = (2*PI);
+        }
+     }
+     */
 /*
     else if(rightPaddleHit(ballCordX, ballCordY, paddleCordX, paddleCordY, 8)){             
         ballHitCalc(ballCordX, ballCordY, ballAngle, paddleCordX, paddleCordY, 8);
