@@ -267,7 +267,7 @@ uint8_t* canvasGetData(void) {
 void drawButtonDescBar(bool left_arrow, bool right_arrow, bool ok, bool back) {
     if (left_arrow) canvasWrite("<<", 5, SMALL_TEXTLINE_FOUR, false, false);
     if (right_arrow) canvasWrite(">>", 35, SMALL_TEXTLINE_FOUR, false, false);
-    if (left_arrow) canvasWrite("OK", 70, SMALL_TEXTLINE_FOUR, false, false);
+    if (ok) canvasWrite("OK", 70, SMALL_TEXTLINE_FOUR, false, false);
     if (back) canvasWrite("BACK", 100, SMALL_TEXTLINE_FOUR, false, false);
 
     canvasPaint(0, 25, 128, 1);

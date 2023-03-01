@@ -212,7 +212,7 @@ int getDifficultySetting(void) {
  * 
  * @author Fridh, William
 */
-void toggleDifficultySetting(){
+void toggleDifficultySetting() {
 	difficulty++;
 	if (difficulty==3) difficulty = 0;
 }

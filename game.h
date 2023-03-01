@@ -11,3 +11,7 @@ void resetArena();
 
 void initArena();
 
+int getDifficultySetting(void);
+
+void toggleDifficultySetting();
+
