@@ -27,7 +27,7 @@ double paddleY2 = 16;
 
 double ballX = 64;
 double ballY = 16;
-double ballAngle = (3*PI/4);		//Made with RADS
+double ballAngle = (PI);		//Made with RADS
 
 int playerOneScore = 0;
 int playerTwoScore = 0;
@@ -126,8 +126,8 @@ void renderGame(){
 		canvasClear();												//Clear the menu 
 		moveBall(&ballX, &ballY, ballAngle);
 		paintArena();												//Paint the arena 					
-		checkBallHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
-		checkBallHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
+		checkBallHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);			//Check player 1 paddle hit 
+		//checkBallHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
 
 		const uint8_t* canvas_data = canvasGetData();				//Get the data from the canvas
   		sendDisplayData(canvas_data);								//Sending that data to the OLED display

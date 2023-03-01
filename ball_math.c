@@ -42,7 +42,7 @@ void ballCalcMapAngle(double *ballAngle){
 
 bool leftPaddleHit(double ballCordX, double ballCordY, int paddleCordX, int paddleCordY, int paddleHeight){
     if(ballCordX <= (paddleCordX + 1)){                                                 //Checking if the paddle should hit 
-        if((ballCordY <= paddleCordY) && ballCordY >= (paddleCordY + paddleHeight)){
+        if((ballCordY >= paddleCordY) && (ballCordY <= (paddleCordY + 8))){
             return true;
         }
     }
@@ -101,51 +101,40 @@ void ballHitCalc(double ballCordX, double ballCordY, double* ballAngle, int padd
 
 
 void checkBallHit(double ballCordX, double ballCordY, double* ballAngle, int paddleCordX, int paddleCordY){  
-
+    /*
     if(ballCordY <= 2 || ballCordY >= 28){                                                   //Boundaries for the arena
         ballCalcMapAngle(ballAngle);
     }
+    */
     
-    else if(leftPaddleHit(ballCordX, ballCordY, paddleCordX, paddleCordY, 8)){               // 8 = the paddle pixel height         
-        ballHitCalc(ballCordX, ballCordY, ballAngle, paddleCordX, paddleCordY, 8);
+   if(leftPaddleHit(ballCordX, ballCordY, paddleCordX, paddleCordY, 8)){               // 8 = the paddle pixel height         
+        //ballHitCalc(ballCordX, ballCordY, ballAngle, paddleCordX, paddleCordY, 8);
+            *ballAngle = (2*PI);
+
     }
 
+     
+
+/*
     else if(rightPaddleHit(ballCordX, ballCordY, paddleCordX, paddleCordY, 8)){             
         ballHitCalc(ballCordX, ballCordY, ballAngle, paddleCordX, paddleCordY, 8);
     }
-
+*/
 }
 
 
 
 
-void checkPlayerOneScore(int player, int *ballCordX){
+void checkPlayerOneScore(int *playerScore, int ballCordX){
     if(ballCordX == 0){
-        player++;
+        (*playerScore)++;
     }
 }
 
 
 
-void checkPlayerTwoScore(int player, int *ballCordX){
+void checkPlayerTwoScore(int *playerScore, int ballCordX){
     if(ballCordX == 128){
-        player++;
+        (*playerScore)++;
     }
 }
-
-
-
-void getDifficultySetting(){
-    
-
-}
-
-
-
-void toggleDifficultySetting(){
-
-
-}
-
-
-
