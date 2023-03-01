@@ -101,6 +101,7 @@ void setBtnData(void) {
 		} else {
 			if (!current_btn_data) {
 				btn_lock = false;
+			}
 		} else {
 			if (!current_btn_data) {
 				btn_lock = false;
