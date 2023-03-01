@@ -92,8 +92,8 @@ void paintArena() {
 /**
  * This function determines if the paddle will move up or down.
  * The function also makes bounderies for the padels.
- * @param pos			- Current position of padel 
- * @param direction 	- The direction where the padel is going 
+ * @param {int} pos Current position of padel 
+ * @param {int] direction The direction where the padel is going 
  * 
  * @author Åhlin, Pontus
 */
@@ -179,7 +179,7 @@ void playAi(int difficulty){
 
 void gameOver(){
 	if(playerOneScore == 5 || playerTwoScore == 5){
-	difficulty = 1;									//Init difficulty to medium.
+	difficulty = 1;									//Reset difficulty to medium.
 	setInGame(false); 
 	setMenuScreenCode(36);							//Jump to set high score
 	}
@@ -207,6 +207,7 @@ void serve(){
 /**
  * This function is called from main, continuously, that checks 
  * whether a button is pressed or not. 
+ *
  * @param {int} buttonData Takes in the 
  *
  * @author Åhlin, Pontus
@@ -234,8 +235,10 @@ void gameButtonTriggered(int buttonData) {
 
 
 /**
- * Functions that makes the game playable
- * is called into to this function
+ * Functions that are called when
+ * in the game 
+ * 
+ * @author Åhlin, Pontus
 */
 
 void playingGame() {
@@ -268,7 +271,7 @@ void resetArena() {
     paddleY1 = 15;
     paddleX2 = 126;
     paddleY2 = 15;
-	serve();
+	serve();				//Deciding 
 }
 
 
