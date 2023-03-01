@@ -17,6 +17,22 @@ int getCharLen(char *c) {
 
 
 /**
+ * Toggle Capital Letters In ASCII
+ * 
+ * Used for toggling ASCII characters for inputs.
+ * 
+ * @param {char} char pointer to char to toggle
+ * 
+ * @author Fridh, William
+*/
+void toggleCapitalLetters(char *str) {
+    (*str)++;
+    if (*str < 65 || *str > 90) *str = 65;
+}
+
+
+
+/**
  * A simple delay use
  * 
  * @param {int} - amount of ticks that the loop will go through

@@ -16,7 +16,7 @@
 #define HIGHSCORE_AMOUNT 9                      // Max amount of highscores
 char initials[HIGHSCORE_AMOUNT][4];             // Holds initials inputed by the player
 int points[HIGHSCORE_AMOUNT][3];                // 0: player score & 1: ai score & 2: ratio
-char inputData[3] = {'A','B','C'};
+char inputData[5] = {'-','\0','-','\0','-'};
 
 
 

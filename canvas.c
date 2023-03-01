@@ -13,21 +13,13 @@
 #include "basicFunctions.h"                     // Used in production
 //#include "basicFunctions.c"                     // Used for debugging
 #include "menu.h"
+#include "config.h"
 
 
 
 /**
  * Data & Settings For The Canvas
 */
-#define DISPLAY_HEIGHT 32
-#define DISPLAY_WIDTH 128
-#define DISPLAY_BYTES (DISPLAY_HEIGHT/8)*DISPLAY_WIDTH
-#define LETTER_SPACING 1
-#define SMALL_TEXTLINE_ONE 0
-#define SMALL_TEXTLINE_TWO 9
-#define SMALL_TEXTLINE_THREE 18
-#define SMALL_TEXTLINE_FOUR 27
-
 static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
 
 

@@ -2,26 +2,23 @@
  * Include Libraries & Models
 */
 #include <stdbool.h>
+#include "config.h"
 #include "canvas.h"
 #include "shieldDisplay.h"
 #include "game.h"
 #include "main.h"
 #include "highscore.h"
+#include "basicFunctions.h"
 
 #include "model/startscreen.c"
 #include "model/paddle.c"
-
-#define SMALL_TEXTLINE_ONE 0
-#define SMALL_TEXTLINE_TWO 9
-#define SMALL_TEXTLINE_THREE 18
-#define SMALL_TEXTLINE_FOUR 27
 
 
 
 /**
  * Settings
 */
-int menuScreencode = 36;
+int menuScreencode = 0;
 int screenCodes[] = {0, 1, 2, 3, 10, 11, 20, 30, 36, 37, 38, 39};
 
 
@@ -56,8 +53,6 @@ void setMenuScreenCode(int code) {
  * @author Fridh, William
 */
 void renderMenu(void) {
-
-    char* t = (char*)inputData[0];
 
     canvasClear();
     switch (menuScreencode) {
@@ -141,24 +136,42 @@ void renderMenu(void) {
 
         case (36): // Enter first letter
 
-            //canvasWrite("ENTER HIGHSCORE", 0, SMALL_TEXTLINE_ONE, false, false);
-            canvasWrite(t, 54, SMALL_TEXTLINE_TWO, false, true);
-            //canvasWrite((char*)&inputDataArray[1], 62, SMALL_TEXTLINE_TWO, false, false);
-            //canvasWrite((char*)&inputDataArray[2], 70, SMALL_TEXTLINE_TWO, false, false);
-
+            canvasWrite("ENTER HIGHSCORE", 20, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite((char*)&inputData[0], 54, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite((char*)&inputData[2], 64, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite((char*)&inputData[4], 74, SMALL_TEXTLINE_TWO, false, true);
+            canvasPaint(54, 18, 8, 2);
 
             drawButtonDescBar(false, true, true, false);
             break;
         case (37): // Enter second letter
-            canvasWrite("ENTER HIGHSCORE", SMALL_TEXTLINE_ONE, 9, false, false);
+
+            canvasWrite("ENTER HIGHSCORE", 20, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite((char*)&inputData[0], 54, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite((char*)&inputData[2], 64, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite((char*)&inputData[4], 74, SMALL_TEXTLINE_TWO, false, true);
+            canvasPaint(64, 18, 8, 2);
+
             drawButtonDescBar(true, true, true, false);
             break;
         case (38): // Enter third letter
-            canvasWrite("ENTER HIGHSCORE", SMALL_TEXTLINE_ONE, 9, false, false);
+
+            canvasWrite("ENTER HIGHSCORE", 20, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite((char*)&inputData[0], 54, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite((char*)&inputData[2], 64, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite((char*)&inputData[4], 74, SMALL_TEXTLINE_TWO, false, true);
+            canvasPaint(74, 18, 8, 2);
+
             drawButtonDescBar(true, true, true, false);
             break;
         case (39): // Finish
-            canvasWrite("ENTER HIGHSCORE", SMALL_TEXTLINE_ONE, 9, false, false);
+
+            canvasWrite("ENTER HIGHSCORE", 20, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite((char*)&inputData[0], 54, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite((char*)&inputData[2], 64, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite((char*)&inputData[4], 74, SMALL_TEXTLINE_TWO, false, true);
+            canvasWrite("#", 86, SMALL_TEXTLINE_TWO, false, true);
+
             drawButtonDescBar(true, false, true, false);
             break;
         
@@ -206,6 +219,27 @@ void triggerOk(void) {
             initArena();
             setInGame(true);
             break;
+
+        case (36):
+            toggleCapitalLetters(&inputData[0]);
+            break;
+
+        case (37):
+            toggleCapitalLetters(&inputData[2]);
+            break;
+
+        case (38):
+            toggleCapitalLetters(&inputData[4]);
+            break;
+
+        case (39):
+            if (getPlayerOneScore() > getPlayerTwoScore() ) { // Notes: Add || ifGameMode == against bot
+                addHighscore(inputData[0], inputData[2], inputData[4], getPlayerOneScore(), getPlayerTwoScore());
+            } else { // Only possible if played against another player
+                addHighscore(inputData[0], inputData[2], inputData[4], getPlayerTwoScore(), getPlayerOneScore());
+            }
+            setMenuScreenCode(30);
+            break;
         
         default:
             break;
@@ -251,16 +285,17 @@ void triggerBack(void) {
  * 
  * Button 4: Navigate left
  * Button 3: Navigate right
- * Button 2: 
+ * Button 2: OK
+ * Button 1: Back
  * 
  * @param {int} - button data (lower 4 bits)
  * 
  * @author Fridh, William
 */
 void menuButtonTriggered(int buttonData) {
-    if (menuScreencode == 0 && buttonData > 0) {        // If landing screen and button is pressed
-        menuScreencode = 1;                             // Jump to screen #1
-        return;                                         // Stop function
+    if (menuScreencode == 0 && buttonData > 0) {            // If landing screen and button is pressed
+        menuScreencode = 1;                                 // Jump to screen #1
+        return;                                             // Stop function
     }
 
     switch (buttonData) {

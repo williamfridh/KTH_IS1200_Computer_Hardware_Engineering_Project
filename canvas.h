@@ -1,6 +1,10 @@
 /**
  * @author Fridh, William
 */
+
+#ifndef CANVAS
+#define CANVAS
+
 #include <stdint.h>
 
 void canvasPaint(int x, int y, int width, int height);
@@ -26,4 +30,5 @@ void canvasInsertModel(
 
 uint8_t* canvasGetData(void);
 
+#endif
 
