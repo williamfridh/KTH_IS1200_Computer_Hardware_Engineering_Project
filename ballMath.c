@@ -15,6 +15,7 @@
 
 
 
+
 /**
  * Determining the speed of the ball
  
@@ -24,6 +25,7 @@ void moveBall(double *ballX, double *ballY, double ballAngle){
     *ballX += cos(ballAngle);
     *ballY -= sin(ballAngle);                   //-(negative) because of the coordinate system   
 }
+
 
 
 
@@ -172,6 +174,7 @@ void checkPlayerScore(int *playerOneScore, int* playerTwoScore, double ballCordX
         resetArena();
     }
 }
+
 
 
 

@@ -11,7 +11,6 @@
 #include "ballMath.h"
 #include "menu.h"
 #include "main.h"
-#include "ai.h"
 
 #include "model/ball.c"
 #include "model/map.c"
@@ -59,7 +58,7 @@ int pvpMode = 0;				//1 means it is pvp
 void printPlayerScore(int playerOneScore, int playerTwoScore){
 
 	int ascii1 = playerOneScore + 48;	//+ 48 because we want the ascii value in decimal (48 = 0)
-	int ascii2 = playerTwoScore + 47;	//+ 47 because somehow when 
+	int ascii2 = playerTwoScore + 48;	//+ 47 because somehow when 
 
 	char * p1 = (char*)&ascii1;			
 	char * p2 = (char*)&ascii2;					//Here, we explicitly tell the compiler that we want the integer address to be treated
@@ -179,7 +178,7 @@ void playAi(int difficulty){
 */
 
 void gameOver(){
-	if(playerOneScore == 5 | playerTwoScore == 5){
+	if(playerOneScore == 5 || playerTwoScore == 5){
 	difficulty = 1;									//Init difficulty to medium.
 	setInGame(false); 
 	setMenuScreenCode(36);							//Jump to set high score
@@ -198,7 +197,7 @@ void gameOver(){
  * @param {int} playerTwoScore Score of player two
 */
 
-void serve(int playerOneScore, int playerTwoScore){
+void serve(){
 	if(playerOneScore > playerTwoScore) ballAngle = 0;
 	else ballAngle = PI;
 }
@@ -241,7 +240,6 @@ void gameButtonTriggered(int buttonData) {
 
 void playingGame() {
 	canvasClear();															//Clear the menu 
-	serve(playerOneScore, playerTwoScore);
 	moveBall(&ballX, &ballY, ballAngle);									//Moves the ball
 	paintArena();															//Paint the arena 	
 	playAi(difficulty);
@@ -270,7 +268,7 @@ void resetArena() {
     paddleY1 = 15;
     paddleX2 = 126;
     paddleY2 = 15;
-	ballAngle = PI;
+	serve();
 }
 
 
