@@ -7,7 +7,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include "game.h"
-#include "basic_functions.h"
+#include "basicFunctions.h"
 
 #define PI 3.141592654
 #define PADDLE_HEIGHT 8.0
@@ -162,6 +162,7 @@ void checkPlayerScore(int *playerOneScore, int* playerTwoScore, double ballCordX
     if (ballCordX > 128.0) {
         (*playerOneScore)++;
         initArena();
+        
     }
     if (ballCordX < 0.0) {
         (*playerTwoScore)++;

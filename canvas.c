@@ -4,14 +4,15 @@
 #include <stdint.h>								// Declarations of uint_32 and the like.
 #include <stdbool.h>							// Support for boolean
 #include <stdio.h>                              // Used for debugging
+
 #include "model/paddle.c"
 #include "model/ball.c"
-#include "model/font_big.c"
-#include "model/font_small.c"
-#include "model/menu_navigation.c"
+#include "model/fontBig.c"
+#include "model/fontSmall.c"
 
 //#include "basicFunctions.h"                     // Used in production
 #include "basicFunctions.c"                     // Used for debugging
+#include "menu.h"
 
 
 
