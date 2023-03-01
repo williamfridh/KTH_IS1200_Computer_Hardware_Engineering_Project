@@ -10,6 +10,11 @@
 #include "model/startscreen.c"
 #include "model/paddle.c"
 
+#define SMALL_TEXTLINE_ONE 0
+#define SMALL_TEXTLINE_TWO 9
+#define SMALL_TEXTLINE_THREE 18
+#define SMALL_TEXTLINE_FOUR 27
+
 
 
 /**
@@ -59,7 +64,7 @@ void renderMenu(void) {
         /* ======================================== PLAYER VS AI ======================================== */
         case (1):
             canvasWrite("PLAY VS. AI", 15, 9, false, true);
-            drawButtonDescBar(false, false, true, false);
+            drawButtonDescBar(false, true, true, false);
             break;
         case (10):
             canvasWrite("DIFFICULTY", 16, 9, false, true);
@@ -72,7 +77,7 @@ void renderMenu(void) {
         /* ======================================== PLAYER VS PLAYER ======================================== */
         case (2):
             canvasWrite("PVP", 50, 9, false, true);
-            drawButtonDescBar(true, true, true, true);
+            drawButtonDescBar(true, true, true, false);
             break;
         case (20):
             canvasWrite("START", 40, 9, false, true);
@@ -81,7 +86,7 @@ void renderMenu(void) {
         /* ======================================== HIGHSCORE ======================================== */
         case (3):
             canvasWrite("HIGHSCORE", 22, 9, false, true);
-            drawButtonDescBar(false, false, false, true);
+            drawButtonDescBar(true, false, true, false);
             break;
         case (30):
             canvasWrite("1:", 0, SMALL_TEXTLINE_ONE, false, false);

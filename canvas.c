@@ -10,8 +10,8 @@
 #include "model/fontBig.c"
 #include "model/fontSmall.c"
 
-//#include "basicFunctions.h"                     // Used in production
-#include "basicFunctions.c"                     // Used for debugging
+#include "basicFunctions.h"                     // Used in production
+//#include "basicFunctions.c"                     // Used for debugging
 #include "menu.h"
 
 

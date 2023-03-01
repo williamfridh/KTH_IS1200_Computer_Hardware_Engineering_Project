@@ -37,7 +37,7 @@
  * This section holds global settings that
  * itsn't solely related to the game or menu.
 */
-bool in_game = true;
+bool in_game = false;
 volatile int * trise = (volatile int *) 0xbf886100;					// Defined pointer to TRISE (debugging)
 int ledVal = 0;														// Debugging
 int btn_lock = false;												// Used preventing rapid clicks in the menu
@@ -98,10 +98,6 @@ void setBtnData(void) {
 		if (!btn_lock && current_btn_data) {
 			btn_data = btn_data | current_btn_data;
 			btn_lock = true;
-		} else {
-			if (!current_btn_data) {
-				btn_lock = false;
-			}
 		} else {
 			if (!current_btn_data) {
 				btn_lock = false;
@@ -170,7 +166,7 @@ void user_isr(void) {
 */
 void initTimer(void) {
 	T2CON = 0x70;                       								//Stopping timer and setting the prescaler to 1/256
-	PR2 = ((40000000 / 256)/ 10);       								//Setting the period for the timer
+	PR2 = ((30000000 / 256)/ 10);       								//Setting the period for the timer
 	TMR2 = 0;                           								//Ticks to PR2
 	IECSET(0) = 0x100;                  								//Enable interrupts
 	IPC(2) = 0xC;                       								//Enable a interrupt priority
@@ -189,13 +185,12 @@ void initTimer(void) {
  * @authors Fridh, William & Åhlin Pontus
 */
 int main(void) {
-    PORTE = 0;
 
 	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs (debugging)
 
   	TRISDSET = 0xe0;  	                 								// Set buttons 2-4 as inputs 
   	TRISFSET = 0x2;  	                 								// Set button 1 as inputs
-initArena(); // tmp
+
 	initShield();														// Initilize display
 	initTimer();														// Initilize timer
 	initHighscore();													// Initilize highscore
