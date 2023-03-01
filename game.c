@@ -4,7 +4,6 @@
 #include <pic32mx.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <math.h>
 #include "canvas.h"
 #include "shieldDisplay.h"
 #include "ball_math.h"
@@ -79,6 +78,12 @@ bool upOrDown(int pos, int direction) {
 */
 
 void gameButtonTriggered(int buttonData) {
+
+	if (buttonData == 15) {								// Detect if all buttons are pressed at the same time
+		setMenuScreenCode(1);							// Set menu screen page to enter highscore
+		setInGame(false);								// Leave game mode
+		return;											// End function early
+	}
 
 	if(buttonData & 0x8 && upOrDown(paddleY1, 1)){
 		paddleY1++;

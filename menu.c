@@ -1,16 +1,22 @@
-#include <stdbool.h>							// Support for boolean
-#include "model/startscreen.c"
-#include "model/paddle.c"
+/**
+ * Include Libraries & Models
+*/
+#include <stdbool.h>
 #include "canvas.h"
 #include "shieldDisplay.h"
+#include "main.h"
+#include "highscore.h"
+
+#include "model/startscreen.c"
+#include "model/paddle.c"
 
 
 
 /**
  * Settings
 */
-#define MAX_MENU_SCREEN_CODE 4
 int menuScreencode = 0;
+int screenCodes[] = {0,1,2,3,10,11,20,30};
 
 
 
@@ -18,13 +24,20 @@ int menuScreencode = 0;
  * Set Menu Screen Code
  * 
  * This function checks the target screen code before setting it.
+ * 
+ * @param {int}     - target screen code
+ * @param {bool}    - allow screen code to be changed to startscreen (0)
+ * 
+ * @author Fridh, William
  */
 void setMenuScreenCode(int code) {
-	if (0 < code && code <= MAX_MENU_SCREEN_CODE) {
-		menuScreencode = code;
-	} else {
-		return;
-	}
+    if (code == 0) return;
+    for (int i = 0; i < sizeof(screenCodes); i++) {
+        if (screenCodes[i] == code) {
+            menuScreencode = code;
+            return;
+        }
+    }
 }
 
 
@@ -33,32 +46,76 @@ void setMenuScreenCode(int code) {
  * Render Menu
  * 
  * Render menu based on the global variable menuScreencode.
+ * 
+ * @author Fridh, William
 */
 void renderMenu(void) {
+    canvasClear();
     switch (menuScreencode) {
+        /* ======================================== START SCREEN ======================================== */
         case (0):
             canvasInsertModel(0, 0, 128, 32, model_startscreen, false);
             break;
-
+        /* ======================================== PLAYER VS AI ======================================== */
         case (1):
-            canvasClear();
-            canvasWrite("PAGEONE", 0, 0, false, false);
+            canvasWrite("PLAY VS. AI", 15, 9, false, true);
+            drawButtonDescBar(false, false, true, false);
             break;
-
+        case (10):
+            canvasWrite("DIFFICULTY", 16, 9, false, true);
+            drawButtonDescBar(true, true, true, true);
+            break;
+        case (11):
+            canvasWrite("START", 40, 9, false, true);
+            drawButtonDescBar(true, true, true, true);
+            break;  
+        /* ======================================== PLAYER VS PLAYER ======================================== */
         case (2):
-            canvasClear();
-            canvasWrite("PAGETWO", 0, 0, false, true);
+            canvasWrite("PVP", 50, 9, false, true);
+            drawButtonDescBar(true, true, true, true);
             break;
-
+        case (20):
+            canvasWrite("START", 40, 9, false, true);
+            drawButtonDescBar(true, true, true, true);
+            break;
+        /* ======================================== HIGHSCORE ======================================== */
         case (3):
-            canvasClear();
-            canvasWrite("PAGETHREE", 0, 0, false, false);
+            canvasWrite("HIGHSCORE", 22, 9, false, true);
+            drawButtonDescBar(false, false, false, true);
             break;
+        case (30):
+            canvasWrite("1:", 0, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite(getHighscoreInitials(0), 12, SMALL_TEXTLINE_ONE, false, false);
 
-        case (4):
-            canvasClear();
-            canvasWrite("1234567890", 0, 0, false, false);
-            canvasWrite("1234567890", 0, 16, false, true);
+            canvasWrite("2:", 0, SMALL_TEXTLINE_TWO, false, false);
+            canvasWrite(getHighscoreInitials(1), 12, SMALL_TEXTLINE_TWO, false, false);
+
+            canvasWrite("3:", 0, SMALL_TEXTLINE_THREE, false, false);
+            canvasWrite(getHighscoreInitials(2), 12, SMALL_TEXTLINE_THREE, false, false);
+
+            canvasPaint(33, 0, 1, 21);
+            
+            canvasWrite("4:", 36, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite(getHighscoreInitials(3), 48, SMALL_TEXTLINE_ONE, false, false);
+
+            canvasWrite("5:", 36, SMALL_TEXTLINE_TWO, false, false);
+            canvasWrite(getHighscoreInitials(4), 48, SMALL_TEXTLINE_TWO, false, false);
+
+            canvasWrite("6:", 36, SMALL_TEXTLINE_THREE, false, false);
+            canvasWrite(getHighscoreInitials(5), 48, SMALL_TEXTLINE_THREE, false, false);
+
+            canvasPaint(72, 0, 1, 21);
+            
+            canvasWrite("7:", 78, SMALL_TEXTLINE_ONE, false, false);
+            canvasWrite(getHighscoreInitials(6), 90, SMALL_TEXTLINE_ONE, false, false);
+
+            canvasWrite("8:", 78, SMALL_TEXTLINE_TWO, false, false);
+            canvasWrite(getHighscoreInitials(7), 90, SMALL_TEXTLINE_TWO, false, false);
+
+            canvasWrite("9:", 78, SMALL_TEXTLINE_THREE, false, false);
+            canvasWrite(getHighscoreInitials(8), 90, SMALL_TEXTLINE_THREE, false, false);
+
+            drawButtonDescBar(false, false, false, false);
             break;
         
         default:
@@ -75,10 +132,56 @@ void renderMenu(void) {
  * 
  * The OK click is the action when the used selects something in the menu.
  * The action will be based on the current screen code.
+ * 
+ * @author Fridh, William
 */
 void triggerOk(void) {
     switch (menuScreencode) {
         case (1):
+            setMenuScreenCode(10);
+            break;
+            
+        case (2):
+            setMenuScreenCode(20);
+            break;
+
+        case (3):
+            setMenuScreenCode(30);
+            break;
+
+        case (11):
+        case (20):
+            setInGame(true);
+            break;
+        
+        default:
+            break;
+    }
+}
+
+
+
+/**
+ * Trigger Back Action
+ * 
+ * Navigates the user back one step in the menu.
+ * 
+ * @author Fridh, William
+*/
+void triggerBack(void) {
+    switch (menuScreencode) {
+        case (10):
+        case (11):
+            setMenuScreenCode(1);
+            break;
+            
+        case (20):
+        case (21):
+            setMenuScreenCode(2);
+            break;
+
+        case (30):
+            setMenuScreenCode(3);
             break;
         
         default:
@@ -95,7 +198,11 @@ void triggerOk(void) {
  * 
  * Button 4: Navigate left
  * Button 3: Navigate right
- * Button 2: OK
+ * Button 2: 
+ * 
+ * @param {int} - button data (lower 4 bits)
+ * 
+ * @author Fridh, William
 */
 void menuButtonTriggered(int buttonData) {
     if (menuScreencode == 0 && buttonData > 0) {        // If landing screen and button is pressed
@@ -104,25 +211,24 @@ void menuButtonTriggered(int buttonData) {
     }
 
     switch (buttonData) {
-    case (8):                                           // Button #4 (firt from the left)
-        setMenuScreenCode(menuScreencode-1);            // Navigate backward
-        break;
+        case (8):                                           // Button #4 (firt from the left)
+            setMenuScreenCode(menuScreencode-1);            // Navigate backward
+            break;
 
-    case (4):                                           // Button #3 (second from the left)
-        setMenuScreenCode(menuScreencode+1);            // Navigate forward
-        break;
+        case (4):                                           // Button #3 (second from the left)
+            setMenuScreenCode(menuScreencode+1);            // Navigate forward
+            break;
 
-    case (2):                                           // Button #2 (third from the left)
-        triggerOk();                                    // Trigger ok-click.
-        break;
+        case (2):                                           // Button #2 (third from the left)
+            triggerOk();                                    // Trigger ok-click.
+            break;
 
-    case (1):                                           // Button #1 (fourth from the left)
-        /* code */
-        break;
-    
-    default:
-        // Can be removed.
-        break;
+        case (1):                                           // Button #1 (fourth from the left)
+            triggerBack();                                  // Trigger back-click.
+            break;
+        
+        default:
+            break;
     }
 }
 

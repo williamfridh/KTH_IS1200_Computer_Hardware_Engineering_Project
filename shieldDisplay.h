@@ -1,3 +1,6 @@
+/**
+ * @author Åhlins, Pontus
+*/
 #include <pic32mx.h>
 
 uint8_t sendToBuf(uint8_t data);

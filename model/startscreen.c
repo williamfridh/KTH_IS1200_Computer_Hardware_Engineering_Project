@@ -1,3 +1,6 @@
+/**
+ * @author Fridh, William
+*/
 #include <stdint.h>
 
 static uint8_t model_startscreen[][32] = {

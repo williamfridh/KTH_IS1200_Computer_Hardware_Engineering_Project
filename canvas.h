@@ -1,6 +1,7 @@
-#include <pic32mx.h>
-
-void canvasAction(int x, int y, int width, int height, int val);
+/**
+ * @author Fridh, William
+*/
+#include <stdint.h>
 
 void canvasPaint(int x, int y, int width, int height);
 
@@ -11,6 +12,8 @@ void canvasClear();
 bool ifPixelIsFilled(int x, int y);
 
 void canvasWrite(char *txt, int x, int y, bool merge, bool large);
+
+void drawButtonDescBar(bool left_arrow, bool right_arrow, bool ok, bool back);
 
 void canvasInsertModel(
     int x,

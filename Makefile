@@ -1,3 +1,16 @@
+# =============== Makefile ===============
+# This file wasn't written by the group. It was
+# however slightly modified to fit the project
+# and work style of the group.
+#
+# Source: https://github.com/is1200-example-projects/hello-temperature
+#
+# Modifications:
+# 1. An additional flag (-std=c99) was added to CFLAGS to enable more modern C
+# 2. 
+
+
+
 # PIC32 device number
 DEVICE		= 32MX320F128H
 
