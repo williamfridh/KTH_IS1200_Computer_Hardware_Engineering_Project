@@ -7,7 +7,11 @@
 #include <math.h>
 #include "canvas.h"
 #include "shieldDisplay.h"
+#include "basicFunctions.h"
 #include "ballMath.h"
+#include "menu.h"
+#include "main.h"
+#include "ai.h"
 
 #include "model/ball.c"
 #include "model/map.c"
@@ -18,11 +22,12 @@
 
 
 
-/*
-Global values
-Global values that holds data of the players and the balls position.
-Aswell as the score of the player. 
+/**
+ * Global values
+ * Global values that holds data of the players and the balls position.
+ * Aswell as the score of the player. 
 */
+
 int paddleX1;			//The initial positions of the padels. and the ball
 int paddleY1;
 int paddleX2;
@@ -30,26 +35,57 @@ int paddleY2;
 
 double ballX;
 double ballY;
-double ballAngle = PI;		//Made with RADS
+double ballAngle = 0;		//Made with RADS
 
 int playerOneScore;
 int playerTwoScore;
 
 int difficulty = 0;				//The difficulty will range from 0-2, where 0 is easiest.
 
+int pvpMode = 0;				//1 means it is pvp
 
 
-/*
-Checks which button is pressed and if it is pressed
-trigger a certain action, in this case either make the 
-player go down or up
+
+/**
+ * Prints the current score of the players
+ * on the screen 
+ *
+ * @param {int} playerOneScore	The current score of player one 
+ * @param {int} playerTwoScore	The current score of player two 
+ *
+ * @author Åhlin, Pontus
 */
+
+void printPlayerScore(int playerOneScore, int playerTwoScore){
+
+	int ascii1 = playerOneScore + 48;	//+ 48 because we want the ascii value in decimal (48 = 0)
+	int ascii2 = playerTwoScore + 47;	//+ 47 because somehow when 
+
+	char * p1 = (char*)&ascii1;			
+	char * p2 = (char*)&ascii2;					//Here, we explicitly tell the compiler that we want the integer address to be treated
+												// as an address to a character which is legal in C.
+	canvasWrite(p1, 28, 1, false, false);			//Player one score 
+	canvasWrite(p2, 100, 1, false, false);			//Player two score 
+}
+
+
+
+/**
+ * Checks which button is pressed and if it is pressed
+ * trigger a certain action, in this case either make the 
+ * player go down or up
+ *
+ * @author Åhlin, Pontus
+*/
+
 void paintArena() {
 	canvasInsertModel(paddleX1, paddleY1, 2, 8, model_paddle, false);		//The left side padel 
 	canvasInsertModel(paddleX2, paddleY2, 2, 8, model_paddle, false);		//The right side padel 
 
 	canvasInsertModel(0, 0, 128, 32, model_map, true);					//The map
 	canvasInsertModel(ballX, ballY, 2, 2, model_ball, true);			//The ball
+
+	printPlayerScore(playerOneScore, playerTwoScore);
 }
 
 
@@ -60,11 +96,12 @@ void paintArena() {
  * @param pos			- Current position of padel 
  * @param direction 	- The direction where the padel is going 
  * 
+ * @author Åhlin, Pontus
 */
 
 bool upOrDown(int pos, int direction) {
 	int newPos = pos + direction;
-		if(newPos < 24 & newPos > 0){
+		if(newPos < 24 & newPos > 0){			
 			return true; 
 		}
 	return false;
@@ -73,9 +110,87 @@ bool upOrDown(int pos, int direction) {
 
 
 /**
+ * This is a very easy Ai that 
+ * moves the way of the ball,
+ * with a slight delay 
+ *
+ * @param {int} offset 
+ *
+ * @param {int} reaction
+ *
+ * @author Åhlin, Pontus
+*/
+
+void playingAi(int offset, int reaction){
+    if (ballX > reaction){
+	if (paddleY2 == 23){				//Makes the paddle not jump through space and time 
+		paddleY2 = 23;
+	}
+	else if ((paddleY2 + offset) < ballY) {
+		paddleY2++;
+	}			
+	if (paddleY2 == 1){
+		paddleY2 = 1;
+	}
+	
+	else if (ballY < (paddleY2 + offset)){
+		paddleY2--;
+	}
+
+	}
+}
+
+
+/**
+ * This function is where the 
+ * difficulty is chosen 
+*/
+
+
+void playAi(int difficulty){
+
+	switch(difficulty){
+		case(0):
+		playingAi(4, 120);
+		break;
+
+		case(1):
+		playingAi(2,96);
+		break;
+
+		case(2):
+		playingAi(1,64);
+		break;
+	}
+}
+
+
+
+/**
+ * Game over 
+ * Once player one or player two gets five
+ * points the game is over and it will take you
+ * to the high-score screen
+ *
+ * @author Åhlin, Pontus
+*/
+
+void gameOver(){
+	if(playerOneScore == 5 | playerTwoScore == 5){
+	difficulty = 1;									//Init difficulty to medium.
+	setInGame(false); 
+	setMenuScreenCode(36);							//Jump to set high score
+	}
+}
+
+
+
+/**
  * This function is called from main, continuously, that checks 
  * whether a button is pressed or not. 
- * @param buttonData	- 
+ * @param {int} buttonData Takes in the 
+ *
+ * @author Åhlin, Pontus
 */
 
 void gameButtonTriggered(int buttonData) {
@@ -100,42 +215,47 @@ void gameButtonTriggered(int buttonData) {
 
 
 /**
- * Functions from ball_math.h is called to here
+ * Functions that makes the game playable
+ * is called into to this function
 */
 
 void playingGame() {
-
-	//ballHit(ballX, ballY, ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
-	//ballHit(ballX, ballY, ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit
-	//checkPlayerOneScore(playerOneScore, ballX);
-	//checkPlayerTwoScore(playerTwoScore, ballX);
-
-
+	canvasClear();															//Clear the menu 
+	moveBall(&ballX, &ballY, ballAngle);									//Moves the ball
+	paintArena();															//Paint the arena 	
+	playAi(difficulty);
+	checkEdgeHit(ballY, &ballAngle);										//Check arena hit 
+	checkLeftPaddleHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
+	checkRightPaddleHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
+	checkPlayerScore(&playerOneScore, &playerTwoScore, ballX);
+	gameOver();																//Checks game state 
 }
 
 
 
 /** 
-* Resets the arena
-*
-* Resets the ball and paddles
-* to thier starting positions
-* 
-* @author Åhlin, Pontus
+ * Resets the arena
+ *
+ * Resets the ball and paddles
+ * to thier starting positions
+ * 
+ * @author Åhlin, Pontus
 */
 
 void resetArena() {
     ballY = 16;
     ballX = 64;
-    paddleX1 = 4;			//The initial positions of the padels. and the ball
-    paddleY1 = 16;
-    paddleX2 = 122;
-    paddleY2 = 16;
+    paddleX1 = 0;			//The initial positions of the padels. and the ball
+    paddleY1 = 15;
+    paddleX2 = 126;
+    paddleY2 = 15;
+	ballAngle = PI;
 }
 
 
 /**
- * initializes the paddles, arena when
+ * initializes the paddles, arena 
+ * and player score when
  * starting the game 
  * 
  * @author Åhlin, Pontus
@@ -145,27 +265,24 @@ void initArena() {
 	resetArena();
 	playerOneScore = 0;
 	playerTwoScore = 0;
-	
 }
+
 
 
 /**
  * The function that main calls when we want to load in
  * the game state.
+ * 
+ * @author Åhlin, Pontus
 */
-void renderGame(){
-		canvasClear();															//Clear the menu 
-		moveBall(&ballX, &ballY, ballAngle);
-		paintArena();															//Paint the arena 	
-		checkEdgeHit(ballY, &ballAngle);		
-		checkLeftPaddleHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
-		checkRightPaddleHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
-		checkPlayerScore(&playerOneScore, &playerTwoScore, ballX);
 
+void renderGame(){
+		playingGame();
 
 		const uint8_t* canvas_data = canvasGetData();				//Get the data from the canvas
   		sendDisplayData(canvas_data);								//Sending that data to the OLED display
 }
+
 
 
 /**
@@ -188,8 +305,9 @@ int getPlayerOneScore(void) {
  * 
  * @author Åhlin, Pontus
 */
+
 int getPlayerTwoScore(void) {
-	return playerOneScore;
+	return playerTwoScore;
 }
 
 
@@ -216,4 +334,26 @@ void toggleDifficultySetting() {
 	difficulty++;
 	if (difficulty==3) difficulty = 0;
 }
+
+
+
+/**
+ * Turns either the pvp mode on or off
+ *
+ * @param {bool} trueOrFalse
+ *
+ * @author Åhlin, Pontus
+*/
+
+void pvpModeOnOff(bool trueOrFalse){
+	if (trueOrFalse = true){ 
+		pvpMode = 1;
+	}
+	else {
+		pvpMode = 0;
+	}
+}
+
+
+
 
