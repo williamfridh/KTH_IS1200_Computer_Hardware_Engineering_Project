@@ -10,6 +10,8 @@
 void setInGame(bool newState);
 
 uint8_t random_number;
+int timerInteruptCounterInputLimit;             // A.k.a. game speed
+void toggleGameSpeed(void);
 
 #endif
 
