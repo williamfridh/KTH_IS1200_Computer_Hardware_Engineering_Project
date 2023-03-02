@@ -93,14 +93,12 @@ void checkEdgeHit(double ballCordY, double *ballAngle) {
  * 
  * @return {double} calculated value
  * 
- * @author Fridh, William
+ * @author Fridh, William & Åhlin, Pontus
 */
 double calcHitY(double ballCordY, int paddleCordY) {
     if (ballCordY >= paddleCordY + PADDLE_HEIGHT / 2) {
-        PORTE = 0x1;
         return (ballCordY - paddleCordY)/PADDLE_HEIGHT;
     } else {
-        PORTE = 0x2;
         return (ballCordY - paddleCordY + 1)/PADDLE_HEIGHT;
     }
 }
@@ -118,7 +116,7 @@ double calcHitY(double ballCordY, int paddleCordY) {
  * 
  * @return {double} recalculated value [0, 0.5]
  * 
- * @author Fridh, William
+ * @author Fridh, William & Åhlin, Pontus
 */
 double scaleHitY(double t) {
     return 2*t*t-2*t+0.5;

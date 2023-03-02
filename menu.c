@@ -78,12 +78,12 @@ void renderMenu(void) {
                     canvasWrite("DIFFICULTY: HARD", 15, SMALL_TEXTLINE_TWO, false, false);
                     break;
             }
-            drawButtonDescBar(true, true, true, true);
+            drawButtonDescBar(false, true, true, true);
             break;
 
         case (11):
             canvasWrite("START", 40, BIX_TEXTLINE_CENTER, false, true);
-            drawButtonDescBar(true, true, true, true);
+            drawButtonDescBar(true, false, true, true);
             break;  
         /* ======================================== PVP ======================================== */
         case (2):
@@ -96,7 +96,7 @@ void renderMenu(void) {
             break;
         /* ======================================== HIGHSCORE ======================================== */
         case (3):
-            canvasWrite("HIGHSCORE", 22, BIX_TEXTLINE_CENTER, false, true);
+            canvasWrite("$HIGHSCORE", 17, BIX_TEXTLINE_CENTER, false, true);
             drawButtonDescBar(true, false, true, false);
             break;
         case (30):
@@ -323,6 +323,7 @@ void triggerBack(void) {
         /* ======================================== PVE MENU ======================================== */
         case (10):
         case (11):
+        case (12):
             setMenuScreenCode(1);
             break;
             
