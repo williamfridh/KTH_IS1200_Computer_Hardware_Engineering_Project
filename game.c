@@ -10,7 +10,7 @@
 #include "basicFunctions.h"
 #include "ballMath.h"
 #include "menu.h"
-#include "main.h
+#include "main.h"
 #include "config.h"
 
 #include "model/ball.c"
@@ -59,9 +59,10 @@ void printPlayerScore(int playerOneScore, int playerTwoScore){
 	int ascii2 = playerTwoScore + 48;	//+ 48 because somehow when 
 
 
-	char * p1 = (char*)&ascii1;			
-	char * p2 = (char*)&ascii2;					//Here, we explicitly tell the compiler that we want the integer address to be treated
-												// as an address to a character which is legal in C.
+	char * p1 = (char*)&ascii1;					//Here we need a char pointer to go in to the canvaswrite functions,
+	char * p2 = (char*)&ascii2;					//so we cast ascii as a char pointer, that points to the adress
+												//the players score.
+
 	canvasWrite(p1, 48, 2, false, false);			//Player one score 
 	canvasWrite(p2, 80, 2, false, false);			//Player two score 
 }
@@ -80,8 +81,8 @@ void paintArena() {
 	canvasInsertModel(paddleX1, paddleY1, 2, 8, model_paddle, false);		//The left side padel 
 	canvasInsertModel(paddleX2, paddleY2, 2, 8, model_paddle, false);		//The right side padel 
 
-	canvasInsertModel(0, 0, 128, 32, model_map, true);					//The map
-	canvasInsertModel(ballX, ballY, 2, 2, model_ball, true);			//The ball
+	canvasInsertModel(0, 0, 128, 32, model_map, true);						//The map
+	canvasInsertModel(ballX, ballY, 2, 2, model_ball, true);				//The ball
 
 	printPlayerScore(playerOneScore, playerTwoScore);
 }
