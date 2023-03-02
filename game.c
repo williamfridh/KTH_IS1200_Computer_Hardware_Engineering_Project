@@ -64,7 +64,7 @@ void printPlayerScore(int playerOneScore, int playerTwoScore){
 												//the players score.
 
 	canvasWrite(p1, 48, 2, false, false);			//Player one score 
-	canvasWrite(p2, 80, 2, false, false);			//Player two score 
+	canvasWrite(p2, 73, 2, false, false);			//Player two score 
 }
 
 
