@@ -32,15 +32,3 @@ void toggleCapitalLetters(char *str) {
 
 
 
-/**
- * A simple delay use
- * 
- * @param {int} - amount of ticks that the loop will go through
- * 
- * @author Åhlin, Pontus
-*/
-void delay(int ticks) {
-	int i;
-	for(i = ticks; i > 0; i--);
-}
-
