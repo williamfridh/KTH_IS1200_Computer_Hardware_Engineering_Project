@@ -19,7 +19,7 @@
  * Settings
 */
 int menuScreencode = 0;
-int screenCodes[] = {0, 1, 2, 3, 10, 11, 20, 30, 36, 37, 38, 39};
+int screenCodes[] = {0, 1, 2, 3, 10, 11, 20, 30, 36, 37, 38, 39, 41};
 
 
 
@@ -60,9 +60,9 @@ void renderMenu(void) {
         case (0):
             canvasInsertModel(0, 0, 128, 32, model_startscreen, false);
             break;
-        /* ======================================== PLAYER VS AI ======================================== */
+        /* ======================================== PVE ======================================== */
         case (1):
-            canvasWrite("PLAY VS. AI", 15, 9, false, true);
+            canvasWrite("PLAY VS. AI", 15, BIX_TEXTLINE_CENTER, false, true);
             drawButtonDescBar(false, true, true, false);
             break;
 
@@ -82,21 +82,21 @@ void renderMenu(void) {
             break;
 
         case (11):
-            canvasWrite("START", 40, 9, false, true);
+            canvasWrite("START", 40, BIX_TEXTLINE_CENTER, false, true);
             drawButtonDescBar(true, true, true, true);
             break;  
-        /* ======================================== PLAYER VS PLAYER ======================================== */
+        /* ======================================== PVP ======================================== */
         case (2):
-            canvasWrite("PVP", 50, 9, false, true);
+            canvasWrite("PVP", 50, BIX_TEXTLINE_CENTER, false, true);
             drawButtonDescBar(true, true, true, false);
             break;
         case (20):
-            canvasWrite("START", 40, 9, false, true);
+            canvasWrite("START", 40, BIX_TEXTLINE_CENTER, false, true);
             drawButtonDescBar(true, true, true, true);
             break;
         /* ======================================== HIGHSCORE ======================================== */
         case (3):
-            canvasWrite("HIGHSCORE", 22, 9, false, true);
+            canvasWrite("HIGHSCORE", 22, BIX_TEXTLINE_CENTER, false, true);
             drawButtonDescBar(true, false, true, false);
             break;
         case (30):
@@ -174,7 +174,16 @@ void renderMenu(void) {
 
             drawButtonDescBar(true, false, true, false);
             break;
-        
+        /* ======================================== WINNER ANNOUNCEMENT ======================================== */
+        case(41):
+            canvasWrite("PLAYER 1", 20, BIX_TEXTLINE_ONE, false, true);
+            canvasWrite("PLAYER 2", 20, BIX_TEXTLINE_ONE, false, true);
+            canvasWrite("AI", 55, BIX_TEXTLINE_ONE, false, true);
+            canvasWrite("WINS", 44, BIX_TEXTLINE_TWO, false, true);
+
+            drawButtonDescBar(false, false, true, false);
+            break;
+            
         default:
             break;
     }
@@ -194,6 +203,8 @@ void renderMenu(void) {
 */
 void triggerOk(void) {
     switch (menuScreencode) {
+
+        /* ======================================== MAIN MENU ======================================== */
         case (1):
             setMenuScreenCode(10);
             break;
@@ -206,6 +217,7 @@ void triggerOk(void) {
             setMenuScreenCode(30);
             break;
 
+        /* ======================================== PVE MENU ======================================== */
         case(10):
             toggleDifficultySetting();
             break;
@@ -215,11 +227,13 @@ void triggerOk(void) {
             setInGame(true);
             break;
 
+        /* ======================================== PVP MENU ======================================== */
         case (20):
             initArena();
             setInGame(true);
             break;
 
+        /* ======================================== HIGHSCORE INPUT ======================================== */
         case (36):
             toggleCapitalLetters(&inputData[0]);
             break;
@@ -240,8 +254,14 @@ void triggerOk(void) {
             }
             setMenuScreenCode(30);
             break;
+
+        /* ======================================== WINNER ANNOUNCEMENT ======================================== */
+        case (41):
+            setMenuScreenCode(36);
+            break;
         
         default:
+            // Will not execute.
             break;
     }
 }
@@ -257,21 +277,24 @@ void triggerOk(void) {
 */
 void triggerBack(void) {
     switch (menuScreencode) {
+        /* ======================================== PVE MENU ======================================== */
         case (10):
         case (11):
             setMenuScreenCode(1);
             break;
             
+        /* ======================================== PVP MENU ======================================== */
         case (20):
-        case (21):
             setMenuScreenCode(2);
             break;
 
+        /* ======================================== HIGHSCORE ======================================== */
         case (30):
             setMenuScreenCode(3);
             break;
         
         default:
+            // Will not execute.
             break;
     }
 }
@@ -316,6 +339,7 @@ void menuButtonTriggered(int buttonData) {
             break;
         
         default:
+            // Will not execute.
             break;
     }
 }
