@@ -19,5 +19,11 @@
 #define DISPLAY_WIDTH 128
 #define DISPLAY_BYTES (DISPLAY_HEIGHT/8)*DISPLAY_WIDTH
 
+#define PI 3.141592654
+#define PADDLE_HEIGHT 8.0
+#define NEAR_PI (12*PI)/18
+
+#define HIGHSCORE_AMOUNT 9                      // Max amount of highscores
+
 #endif
 
