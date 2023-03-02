@@ -108,12 +108,11 @@ bool upOrDown(int pos, int direction) {
 
 /**
  * This is a very easy Ai that 
- * moves the way of the ball,
- * with a slight delay 
+ * moves the way of the ball
  *
- * @param {int} offset 
+ * @param {int} offset Where the ai paddle should hit the ball in the Y-axis 
  *
- * @param {int} reaction
+ * @param {int} reaction When the ai reacts to the ball in the X-axis
  *
  * @author Åhlin, Pontus
 */
@@ -140,7 +139,11 @@ void playingAi(int offset, int reaction){
 /**
  * This function is where the 
  * difficulty is chosen 
-*/
+ *
+ * @param {int} difficulty This  
+ * 
+ * @author Åhlin, Pontus
+ */
 
 
 void playAi(int difficulty){
@@ -177,6 +180,23 @@ void gameOver(){
 		setInGame(false); 
 		setMenuScreenCode(41);							//Jump to set high score
 	}
+}
+
+
+
+/**
+ * Serve
+ *
+ * Deciding who should serve depending 
+ * on who has most points
+ *
+ * @param {int} playerOneScore Score of player one 
+ * @param {int} playerTwoScore Score of player two
+*/
+
+void serve(int playerOneScore, int playerTwoScore){
+	if(playerOneScore > playerTwoScore) ballAngle = 0;
+	else ballAngle = PI;
 }
 
 
@@ -231,6 +251,7 @@ void gameButtonTriggered(int buttonData) {
 
 void playingGame() {
 	canvasClear();															//Clear the menu 
+	serve(playerOneScore, playerTwoScore);
 	moveBall(&ballX, &ballY, ballAngle);									//Moves the ball
 	paintArena();															//Paint the arena 	
 	if (!pvpMode) playAi(difficulty);
@@ -380,6 +401,4 @@ int getWinner(void) {
         }
     }
 }
-
-
 
