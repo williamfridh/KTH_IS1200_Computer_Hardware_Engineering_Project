@@ -10,14 +10,12 @@
 #include "basicFunctions.h"
 #include "ballMath.h"
 #include "menu.h"
-#include "main.h"
+#include "main.h
+#include "config.h"
 
 #include "model/ball.c"
 #include "model/map.c"
 #include "model/paddle.c"
-
-#define PI 3.141592654
-#define PADDLE_HEIGHT 8.0
 
 
 
@@ -41,7 +39,7 @@ int playerTwoScore;
 
 int difficulty = 0;				//The difficulty will range from 0-2, where 0 is easiest.
 
-int pvpMode = 0;				//1 means it is pvp
+bool pvpMode;				// true means it is pvp
 
 
 
@@ -58,13 +56,14 @@ int pvpMode = 0;				//1 means it is pvp
 void printPlayerScore(int playerOneScore, int playerTwoScore){
 
 	int ascii1 = playerOneScore + 48;	//+ 48 because we want the ascii value in decimal (48 = 0)
-	int ascii2 = playerTwoScore + 48;	//+ 47 because somehow when 
+	int ascii2 = playerTwoScore + 48;	//+ 48 because somehow when 
+
 
 	char * p1 = (char*)&ascii1;			
 	char * p2 = (char*)&ascii2;					//Here, we explicitly tell the compiler that we want the integer address to be treated
 												// as an address to a character which is legal in C.
-	canvasWrite(p1, 28, 1, false, false);			//Player one score 
-	canvasWrite(p2, 100, 1, false, false);			//Player two score 
+	canvasWrite(p1, 48, 2, false, false);			//Player one score 
+	canvasWrite(p2, 80, 2, false, false);			//Player two score 
 }
 
 
@@ -121,20 +120,19 @@ bool upOrDown(int pos, int direction) {
 
 void playingAi(int offset, int reaction){
     if (ballX > reaction){
-	if (paddleY2 == 23){				//Makes the paddle not jump through space and time 
-		paddleY2 = 23;
-	}
-	else if ((paddleY2 + offset) < ballY) {
-		paddleY2++;
-	}			
-	if (paddleY2 == 1){
-		paddleY2 = 1;
-	}
-	
-	else if (ballY < (paddleY2 + offset)){
-		paddleY2--;
-	}
-
+		if (paddleY2 == 23){				//Makes the paddle not jump through space and time 
+			paddleY2 = 23;
+		}
+		else if ((paddleY2 + offset) < ballY) {
+			paddleY2++;
+		}			
+		if (paddleY2 == 1){
+			paddleY2 = 1;
+		}
+		
+		else if (ballY < (paddleY2 + offset)){
+			paddleY2--;
+		}
 	}
 }
 
@@ -179,9 +177,10 @@ void playAi(int difficulty){
 
 void gameOver(){
 	if(playerOneScore == 5 || playerTwoScore == 5){
-	difficulty = 1;									//Reset difficulty to medium.
-	setInGame(false); 
-	setMenuScreenCode(36);							//Jump to set high score
+		difficulty = 1;									//Init difficulty to medium.
+		setInGame(false); 
+		setMenuScreenCode(41);							//Jump to set high score
+
 	}
 }
 
@@ -215,20 +214,34 @@ void serve(){
 
 void gameButtonTriggered(int buttonData) {
 
-	if(buttonData & 0x8 && upOrDown(paddleY1, 1)){
+	if (buttonData == 15) {
+		setInGame(false);
+		setMenuScreenCode(43);
+		return;
+	}
+
+	if(buttonData & 0x8 && upOrDown(paddleY1, 1)) {
 		paddleY1++;
 	}
 
-	if(buttonData & 0x4 && upOrDown(paddleY1, -1)){
+	if(buttonData & 0x4 && upOrDown(paddleY1, -1)) {
 		paddleY1--;
 	}
-	
-	if(buttonData & 0x2 && upOrDown(paddleY2, 1)){
-		paddleY2++;
-	}
 
-	if(buttonData & 0x1 && upOrDown(paddleY2, -1)){
-		paddleY2--;
+	if (pvpMode) {
+
+		PORTE = 0x1;
+		
+		if( buttonData & 0x2 && upOrDown(paddleY2, 1)) {
+			paddleY2++;
+			PORTE = 0x2;
+		}
+
+		if (buttonData & 0x1 && upOrDown(paddleY2, -1)) {
+			paddleY2--;
+			PORTE = 0x4;
+		}
+
 	}
 }
 
@@ -245,7 +258,7 @@ void playingGame() {
 	canvasClear();															//Clear the menu 
 	moveBall(&ballX, &ballY, ballAngle);									//Moves the ball
 	paintArena();															//Paint the arena 	
-	playAi(difficulty);
+	if (!pvpMode) playAi(difficulty);
 	checkEdgeHit(ballY, &ballAngle);										//Check arena hit 
 	checkLeftPaddleHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
 	checkRightPaddleHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
@@ -366,14 +379,30 @@ void toggleDifficultySetting() {
  *
  * @author Åhlin, Pontus
 */
-
-void pvpModeOnOff(bool trueOrFalse){
-	if (trueOrFalse = true){ 
-		pvpMode = 1;
-	}
-	else {
-		pvpMode = 0;
-	}
+void pvpModeOnOff(bool trueOrFalse) {
+	pvpMode = trueOrFalse;
 }
 
+
+
+/**
+ * Get Winner
+ * 
+ * Check who won the match
+ * 
+ * @return {int} 1 = player one, 2 = player two, 3 = ai
+ * 
+ * @author Fridh, William
+*/
+int getWinner(void) {
+	if (getPlayerOneScore() > getPlayerTwoScore()) { // Player one wins vs
+        return 1;
+    } else { // Player two wins
+        if (pvpMode) { // PVP
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+}
 

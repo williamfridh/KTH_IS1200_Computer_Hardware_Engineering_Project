@@ -8,10 +8,7 @@
 #include <stdbool.h>
 #include "game.h"
 #include "basicFunctions.h"
-
-#define PI 3.141592654
-#define PADDLE_HEIGHT 8.0
-#define NEAR_PI (12*PI)/18
+#include "config.h"
 
 
 

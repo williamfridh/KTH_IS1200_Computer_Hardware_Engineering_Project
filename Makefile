@@ -7,7 +7,9 @@
 #
 # Modifications:
 # 1. An additional flag (-std=c99) was added to CFLAGS to enable more modern C
-# 2. 
+# 2. An additional flag (-mn) was added to LDFLAGS to enable compiling with the math.h library
+#
+# Modifiers: Fridh, William & Åhlin, Pontus
 
 
 

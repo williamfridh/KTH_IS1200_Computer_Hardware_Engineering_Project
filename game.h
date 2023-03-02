@@ -5,6 +5,12 @@
 #ifndef GAME
 #define GAME
 
+bool pvpMode;
+
+void pvpModeOnOff(bool trueOrFalse);
+
+int getWinner(void);
+
 void renderGame();
 
 void gameButtonTriggered(int buttonData);

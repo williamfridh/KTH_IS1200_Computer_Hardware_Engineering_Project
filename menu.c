@@ -16,10 +16,10 @@
 
 
 /**
- * Settings
+ * Data
 */
 int menuScreencode = 0;
-int screenCodes[] = {0, 1, 2, 3, 10, 11, 20, 30, 36, 37, 38, 39, 41};
+int screenCodes[] = {0, 1, 2, 3, 10, 11, 20, 30, 36, 37, 38, 39, 41, 43};
 
 
 
@@ -28,8 +28,8 @@ int screenCodes[] = {0, 1, 2, 3, 10, 11, 20, 30, 36, 37, 38, 39, 41};
  * 
  * This function checks the target screen code before setting it.
  * 
- * @param {int}     - target screen code
- * @param {bool}    - allow screen code to be changed to startscreen (0)
+ * @param {int} target screen code
+ * @param {bool} allow screen code to be changed to startscreen (0)
  * 
  * @author Fridh, William
  */
@@ -92,7 +92,7 @@ void renderMenu(void) {
             break;
         case (20):
             canvasWrite("START", 40, BIX_TEXTLINE_CENTER, false, true);
-            drawButtonDescBar(true, true, true, true);
+            drawButtonDescBar(false, false, true, true);
             break;
         /* ======================================== HIGHSCORE ======================================== */
         case (3):
@@ -174,12 +174,30 @@ void renderMenu(void) {
 
             drawButtonDescBar(true, false, true, false);
             break;
-        /* ======================================== WINNER ANNOUNCEMENT ======================================== */
+        /* ======================================== UNIQUE ======================================== */
         case(41):
-            canvasWrite("PLAYER 1", 20, BIX_TEXTLINE_ONE, false, true);
-            canvasWrite("PLAYER 2", 20, BIX_TEXTLINE_ONE, false, true);
-            canvasWrite("AI", 55, BIX_TEXTLINE_ONE, false, true);
+            switch (getWinner()) {
+                case(1):
+                    canvasWrite("PLAYER 1", 20, BIX_TEXTLINE_ONE, false, true);
+                    break;
+                case(2):
+                    canvasWrite("PLAYER 2", 20, BIX_TEXTLINE_ONE, false, true);
+                    break;
+                case(3):
+                    canvasWrite("AI", 55, BIX_TEXTLINE_ONE, false, true);
+                    break;
+                default:
+                    // Wont be executed.
+                    break;
+            }
+
             canvasWrite("WINS", 44, BIX_TEXTLINE_TWO, false, true);
+
+            drawButtonDescBar(false, false, true, false);
+            break;
+
+        case(43):
+            canvasWrite("GAME STOPPED", 10, BIX_TEXTLINE_CENTER, false, true);
 
             drawButtonDescBar(false, false, true, false);
             break;
@@ -224,12 +242,14 @@ void triggerOk(void) {
 
         case (11):
             initArena();
+            pvpModeOnOff(false);
             setInGame(true);
             break;
 
         /* ======================================== PVP MENU ======================================== */
         case (20):
             initArena();
+            pvpModeOnOff(true);
             setInGame(true);
             break;
 
@@ -247,17 +267,40 @@ void triggerOk(void) {
             break;
 
         case (39):
-            if (getPlayerOneScore() > getPlayerTwoScore() ) { // Notes: Add || ifGameMode == against bot
-                addHighscore(inputData[0], inputData[2], inputData[4], getPlayerOneScore(), getPlayerTwoScore());
-            } else { // Only possible if played against another player
-                addHighscore(inputData[0], inputData[2], inputData[4], getPlayerTwoScore(), getPlayerOneScore());
+            switch (getWinner()) {
+                case (1):
+                    addHighscore(inputData[0], inputData[2], inputData[4], getPlayerOneScore(), getPlayerTwoScore());
+                    break;
+                case (2):
+                    addHighscore(inputData[0], inputData[2], inputData[4], getPlayerTwoScore(), getPlayerOneScore());
+                    break;
+                
+                default:
+                    // Won't execute.
+                    break;
             }
             setMenuScreenCode(30);
             break;
 
-        /* ======================================== WINNER ANNOUNCEMENT ======================================== */
+        /* ======================================== UNIQUE ======================================== */
         case (41):
-            setMenuScreenCode(36);
+            switch (getWinner()) {
+                case(1):
+                case(2):
+                    canvasWrite("PLAYER 2", 20, BIX_TEXTLINE_ONE, false, true);
+                    setMenuScreenCode(36);
+                    break;
+                case(3):
+                    setMenuScreenCode(1);
+                    break;
+                default:
+                    // Wont be executed.
+                    break;
+            }
+            break;
+
+        case (43):
+            setMenuScreenCode(1);
             break;
         
         default:
