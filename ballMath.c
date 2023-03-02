@@ -12,15 +12,21 @@
 
 
 
+
 /**
  * Determining the speed of the ball
- 
+ *
+ * @param {double} ballX The x-coordinate of the ball
+ * @param {double} ballY The y-coordinate of the ball
+ * @param {double} ballAngle The angle of the ball
+
  * @author Åhlin, Pontus
 */
 void moveBall(double *ballX, double *ballY, double ballAngle){
     *ballX += cos(ballAngle);
-    *ballY -= sin(ballAngle);                   //-(negative) because of the coordinate system   
+    *ballY -= sin(ballAngle);                                    //-(negative) because of the coordinate system   
 }
+
 
 
 
@@ -113,11 +119,19 @@ double scaleHitY(double t) {
 }
 
 
-
-/** 
- * Two function that if there is a hit, on the left paddle or the right paddle, 
+/**
+ * This function checks whether the left paddle is hit,
+ * and if it is it calls on other functions that 
+ * calculates the trajectory of the ball
+ * 
+ * @param {double} ballCordX - The current x-coordinate of the ball
+ * @param {double} ballCordY - The current y-coordinate of the ball
+ * @param {double} ballAngle - Pointer that points to the angle of the ball
+ * @param {int} paddleCordX - The current paddle x-coordinate
+ * @param {int} paddleCordY - The current paddle y-coordinate
+ *
+ * @authors Åhlin, Pontus & Fridh, William
 */
-
 
 void checkLeftPaddleHit(double ballCordX, double ballCordY, double* ballAngle, int paddleCordX, int paddleCordY){  
     if (ifVerticalPaddleHit(ballCordY, paddleCordY) && (ballCordX < (paddleCordX + 2))) { 
@@ -132,10 +146,26 @@ void checkLeftPaddleHit(double ballCordX, double ballCordY, double* ballAngle, i
     }   
 }
 
+
+
+/**
+ * This function checks whether the right paddle is hit,
+ * and if it is it calls on other functions that 
+ * calculates the trajectory of the ball
+ * 
+ * @param ballCordX - The current x-coordinate of the ball
+ * @param ballCordY - The current y-coordinate of the ball
+ * @param ballAngle - Pointer that points to the angle of the ball
+ * @param paddleCordX - The current paddle x-coordinate
+ * @param paddleCordY - The current paddle y-coordinate
+ *
+ * @authors Åhlin, Pontus & Fridh, William
+*/
+
 void checkRightPaddleHit(double ballCordX, double ballCordY, double* ballAngle, int paddleCordX, int paddleCordY){  
     if(ifVerticalPaddleHit(ballCordY, paddleCordY) && (ballCordX >= (paddleCordX - 1))){                              
         double hitY = calcHitY(ballCordY, paddleCordY);                  //Checks where the ball hits the paddle 
-        if (hitY == 0.5){                                            //Center hit 
+        if (hitY == 0.5){                                             //Center hit 
             *ballAngle = PI;    
         } else if(hitY < 0.5){                                        //Upper hit 
             *ballAngle = PI - NEAR_PI * scaleHitY(hitY);
@@ -144,6 +174,7 @@ void checkRightPaddleHit(double ballCordX, double ballCordY, double* ballAngle, 
         }        
     }
 }
+
 
 
 /**
@@ -160,7 +191,7 @@ void checkRightPaddleHit(double ballCordX, double ballCordY, double* ballAngle, 
  * @author Åhlin, Pontus
 */
 void checkPlayerScore(int *playerOneScore, int* playerTwoScore, double ballCordX) {
-    if (ballCordX > 127.0) {
+    if (ballCordX > 127.0) {                //127.0 = Goal boundary
         (*playerOneScore)++;                //Points to the player score, increments the value where it is pointing 
         resetArena();
     }
@@ -169,6 +200,7 @@ void checkPlayerScore(int *playerOneScore, int* playerTwoScore, double ballCordX
         resetArena();
     }
 }
+
 
 
 

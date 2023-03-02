@@ -10,7 +10,7 @@
 #include "basicFunctions.h"
 #include "ballMath.h"
 #include "menu.h"
-#include "main.h"
+#include "main.h
 #include "config.h"
 
 #include "model/ball.c"
@@ -58,6 +58,7 @@ void printPlayerScore(int playerOneScore, int playerTwoScore){
 	int ascii1 = playerOneScore + 48;	//+ 48 because we want the ascii value in decimal (48 = 0)
 	int ascii2 = playerTwoScore + 48;	//+ 48 because somehow when 
 
+
 	char * p1 = (char*)&ascii1;			
 	char * p2 = (char*)&ascii2;					//Here, we explicitly tell the compiler that we want the integer address to be treated
 												// as an address to a character which is legal in C.
@@ -90,8 +91,8 @@ void paintArena() {
 /**
  * This function determines if the paddle will move up or down.
  * The function also makes bounderies for the padels.
- * @param pos			- Current position of padel 
- * @param direction 	- The direction where the padel is going 
+ * @param {int} pos Current position of padel 
+ * @param {int] direction The direction where the padel is going 
  * 
  * @author Åhlin, Pontus
 */
@@ -179,6 +180,7 @@ void gameOver(){
 		difficulty = 1;									//Init difficulty to medium.
 		setInGame(false); 
 		setMenuScreenCode(41);							//Jump to set high score
+
 	}
 }
 
@@ -194,7 +196,7 @@ void gameOver(){
  * @param {int} playerTwoScore Score of player two
 */
 
-void serve(int playerOneScore, int playerTwoScore){
+void serve(){
 	if(playerOneScore > playerTwoScore) ballAngle = 0;
 	else ballAngle = PI;
 }
@@ -204,6 +206,7 @@ void serve(int playerOneScore, int playerTwoScore){
 /**
  * This function is called from main, continuously, that checks 
  * whether a button is pressed or not. 
+ *
  * @param {int} buttonData Takes in the 
  *
  * @author Åhlin, Pontus
@@ -245,13 +248,14 @@ void gameButtonTriggered(int buttonData) {
 
 
 /**
- * Functions that makes the game playable
- * is called into to this function
+ * Functions that are called when
+ * in the game 
+ * 
+ * @author Åhlin, Pontus
 */
 
 void playingGame() {
 	canvasClear();															//Clear the menu 
-	serve(playerOneScore, playerTwoScore);
 	moveBall(&ballX, &ballY, ballAngle);									//Moves the ball
 	paintArena();															//Paint the arena 	
 	if (!pvpMode) playAi(difficulty);
@@ -280,7 +284,7 @@ void resetArena() {
     paddleY1 = 15;
     paddleX2 = 126;
     paddleY2 = 15;
-	ballAngle = PI;
+	serve();				//Deciding 
 }
 
 
