@@ -28,6 +28,7 @@
 #include "shieldDisplay.h"
 #include "game.h"
 #include "mips.h"
+#include "main.h"
 
 
 
@@ -143,15 +144,32 @@ void handleBtnData(void) {
  * Interrupt Service Routine
  * 
  * This function detects and resets intruptflags.
+ * It uses interupt counters for adjusting the game
+ * and input speed.
  * 
  * @authors Fridh, William & Åhlin Pontus
 */
+int timerInteruptCounterInput = 0;
+int timerInteruptCounterProgram = 0;
 void user_isr(void) {
-	if(IFS(0) & 0x100){													// Check for relevant flag
+	if (IFS(0) & 0x100) {												// Check for relevant flag
+		timerInteruptCounterInput++;
+		timerInteruptCounterProgram++;
+		if (
+			(in_game && timerInteruptCounterProgram == 50) ||			// Different speed in game
+			(!in_game && timerInteruptCounterProgram == 255)			// Slower speed in menu
+		) {
+			handleBtnData();											// Handle button data
+			resetBtnData();												// Reset button data
+			if (!pvpMode) playAi(difficulty);							// Play AI
+			timerInteruptCounterProgram = 0;
+		}
+		if (timerInteruptCounterInput == 15) {
+			updateScreen();												// Update screen
+			timerInteruptCounterInput = 0;
+		}
 		IFS(0) = IFS(0) & 0xfffffeff;									// Reset interrupt flag
-		handleBtnData();												// Handle button data
-		updateScreen();													// Update screen
-		resetBtnData();													// Reset button data
+		random_number++;												// Incrmeent random number
 	}
 }
 
@@ -165,12 +183,12 @@ void user_isr(void) {
  * @author Åhlin Pontus
 */
 void initTimer(void) {
-	T2CON = 0x70;                       								//Stopping timer and setting the prescaler to 1/256
-	PR2 = ((30000000 / 256)/ 10);       								//Setting the period for the timer
-	TMR2 = 0;                           								//Ticks to PR2
-	IECSET(0) = 0x100;                  								//Enable interrupts
-	IPC(2) = 0xC;                       								//Enable a interrupt priority
-	T2CONSET = 0x8000;                  								//Starting timer
+	T2CON = 0x0;                       									// Stopping timer and setting the prescaler to 1/1
+	PR2 = ((80000000 / 256)/ 10);       								// Setting the period for the timer
+	TMR2 = 0;                           								// Ticks to PR2
+	IECSET(0) = 0x100;                  								// Enable interrupts
+	IPC(2) = 0xC;                       								// Enable a interrupt priority
+	T2CONSET = 0x8000;                  								// Starting timer
 	enable_interrupt();
 }
 

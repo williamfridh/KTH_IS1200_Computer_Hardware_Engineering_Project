@@ -7,9 +7,13 @@
 
 bool pvpMode;
 
+int difficulty;
+
 void pvpModeOnOff(bool trueOrFalse);
 
 int getWinner(void);
+
+void playAi(int difficulty);
 
 void renderGame();
 

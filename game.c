@@ -147,7 +147,7 @@ void playingAi(int offset, int reaction){
  */
 
 
-void playAi(int difficulty){
+void playAi(int difficulty) {
 
 	switch(difficulty){
 		case(0):
@@ -257,8 +257,7 @@ void gameButtonTriggered(int buttonData) {
 void playingGame() {
 	canvasClear();															//Clear the menu 
 	moveBall(&ballX, &ballY, ballAngle);									//Moves the ball
-	paintArena();															//Paint the arena 	
-	if (!pvpMode) playAi(difficulty);
+	paintArena();															//Paint the arena
 	checkEdgeHit(ballY, &ballAngle);										//Check arena hit 
 	checkLeftPaddleHit(ballX, ballY, &ballAngle, paddleX1, paddleY1);		//Check player 1 paddle hit 
 	checkRightPaddleHit(ballX, ballY, &ballAngle, paddleX2, paddleY2);		//Check player 2 paddle hit 
