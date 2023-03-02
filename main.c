@@ -52,7 +52,7 @@ int btn_data;														// Hold button data
  * It can be called upon for instance when a game should
  * start or when a game should end.
  * 
- * @param {bool} - Target state
+ * @param {bool}Target state
  * 
  * @author Fridh, William
 */
@@ -187,6 +187,7 @@ void initTimer(void) {
 int main(void) {
 
 	*trise = *trise & 0xffffff00;										// Set ports 0-7 as outputs (debugging)
+	PORTE = 0;
 
   	TRISDSET = 0xe0;  	                 								// Set buttons 2-4 as inputs 
   	TRISFSET = 0x2;  	                 								// Set button 1 as inputs

@@ -18,7 +18,7 @@
 
 
 /**
- * Data & Settings For The Canvas
+ * Data
 */
 static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
 
@@ -33,11 +33,11 @@ static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
  * Warning: No not call this method if not via
  * a simpler function such as paint and erase.
  * 
- * @param {int}   - x position
- * @param {int}   - y position
- * @param {int}   - width in pixels
- * @param {int}   - height in pixels
- * @param {int}   - target value (0 or 1)
+ * @param {int} x position
+ * @param {int} y position
+ * @param {int} width in pixels
+ * @param {int} height in pixels
+ * @param {int} target value (0 or 1)
  * 
  * @author Fridh, William
 */
@@ -57,10 +57,10 @@ void canvasAction(int x, int y, int width, int height, int val) {
  * Paints to the canvas trough a call to canvasAction().
  * This function can paint at a certain location and draw shapes.
  * 
- * @param {int}   - x position
- * @param {int}   - y position
- * @param {int}   - width in pixels
- * @param {int}   - height in pixels
+ * @param {int} x position
+ * @param {int} y position
+ * @param {int} width in pixels
+ * @param {int} height in pixels
  * 
  * @author Fridh, William
 */
@@ -77,10 +77,10 @@ void canvasPaint(int x, int y, int width, int height) {
  * This function removed from the canvas at a given location
  * and can do so in shapes.
  * 
- * @param {int}   - x position
- * @param {int}   - y position
- * @param {int}   - width in pixels
- * @param {int}   - height in pixels
+ * @param {int} x position
+ * @param {int} y position
+ * @param {int} width in pixels
+ * @param {int} height in pixels
  * 
  * @author Fridh, William
 */
@@ -111,10 +111,10 @@ void canvasClear() {
 /**
  * Check If Pixel In Location
  * 
- * @param {int}   - x position
- * @param {int}   - y position
+ * @param {int} position
+ * @param {int} position
  * 
- * @return {bool} - true if the pixel is in the location
+ * @return {bool} true if the pixel is in the location
  * 
  * @author Fridh, William
 */
@@ -133,12 +133,12 @@ bool ifPixelIsFilled(int x, int y) {
  * 
  * Note: Flipping the modelWidth and moderlHeight arguments results in a flipped model.
  * 
- * @param {int}           - x offset
- * @param {int}           - y offset
- * @param {int}           - width of the model
- * @param {int}           - height of the model
- * @param {uint8_t[][]}   - two-dimensional array of the model
- * @param {bool}          - boolean for deciding merging
+ * @param {int} x offset
+ * @param {int} y offset
+ * @param {int} width of the model
+ * @param {int} height of the model
+ * @param {uint8_t[][]} two-dimensional array of the model
+ * @param {bool} boolean for deciding merging
  * 
  * @author Fridh, William
 */
@@ -177,11 +177,11 @@ void canvasInsertModel(
  * Appart from this, it also cleares the area to be printed
  * beforehand, if merge is set to false.
  * 
- * @param {char*}        - String to be printed on canvas
- * @param {int}          - X position
- * @param {int}          - Y position
- * @param {bool}         - Determin if it should merge or not.
- * @param {bool}         - Print big letters if true, otherwise small
+ * @param {char*} String to be printed on canvas
+ * @param {int} X position
+ * @param {int} Y position
+ * @param {bool} Determin if it should merge or not.
+ * @param {bool} Print big letters if true, otherwise small
  * 
  * @author Fridh, William
 */
@@ -215,13 +215,15 @@ void canvasWrite(char *txt, int x, int y, bool merge, bool big) {
  * 
  * Return: An encoded version of the canvas that can be read by the display.
  * 
+ * @return {uint8_t} An encoded version of the canvas.
+ * 
  * @author Fridh, William
 */
 uint8_t* canvasGetData(void) {
 
-    static uint8_t canvas_encoded[DISPLAY_BYTES];
+    static uint8_t canvas_encoded[DISPLAY_BYTES];                                               // Declare new array
 
-    for (int i = 0; i < DISPLAY_BYTES; i++) canvas_encoded[i] = 255;
+    for (int i = 0; i < DISPLAY_BYTES; i++) canvas_encoded[i] = 255;                            // Add placeholder data to new array
                 
     for (int i = 0, val = 1, byte_row = 0, col = 0; i < DISPLAY_BYTES; i++, val = 1, col++) {   // Loop that also sets values to be used
 
@@ -249,10 +251,10 @@ uint8_t* canvasGetData(void) {
  * A bar that describes each button for the user.
  * Should be used for the menu.
  * 
- * @param {bool}    - whether the left arrow should be visible
- * @param {bool}    - whether the right arrow should be visible
- * @param {bool}    - whether the OK text arrow should be visible
- * @param {bool}    - whether the BACK text should be visible
+ * @param {bool} whether the left arrow should be visible
+ * @param {bool} whether the right arrow should be visible
+ * @param {bool} hether the OK text arrow should be visible
+ * @param {bool} whether the BACK text should be visible
  * 
  * @author Fridh, William
 */

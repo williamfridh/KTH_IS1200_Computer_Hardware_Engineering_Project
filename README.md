@@ -35,8 +35,9 @@ All files except for the following are required for compiling:
 * readme.txt
 
 ### A list of known bugs
-* The ball can get stuck on the edge and start vibrating while still moving horizontally
-* The ball can get in a fixed angle at the top and bottom (it keeps going back and fort horizontally)
+* The ball can get stuck on the edge and start vibrating while still moving horizontally.
+* The ball can get in a fixed angle at the top and bottom (it keeps going back and fort horizontally).
+* Random highscore (slot 9) after first insertion. Dissapear when more is added.
 
 ### Credits & Acknowledgments
 * Fridh, William (https://github.com/williamfridh/IS-1200-Pong-Project)

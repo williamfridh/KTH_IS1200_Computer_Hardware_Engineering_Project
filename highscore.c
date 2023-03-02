@@ -3,6 +3,7 @@
 */
 #include <stdbool.h>							// Support for boolean
 #include <stdio.h>                              // Used for debugging
+#include "config.h"
 
 
 
@@ -13,7 +14,6 @@
  * holds each score, and the second one, holding 5 objects,
  * has three letters, player score, and AI score.
 */
-#define HIGHSCORE_AMOUNT 9                      // Max amount of highscores
 char initials[HIGHSCORE_AMOUNT][4];             // Holds initials inputed by the player
 int points[HIGHSCORE_AMOUNT][3];                // 0: player score & 1: ai score & 2: ratio
 char inputData[5] = {'-','\0','-','\0','-'};
@@ -28,11 +28,11 @@ char inputData[5] = {'-','\0','-','\0','-'};
  * it also moves existing data so it remains sorted
  * (ratio in ascending order).
  * 
- * @param {char}            - Letter to be stored
- * @param {char}            - Letter to be stored
- * @param {char}            - Letter to be stored
- * @param {int}             - Scores by player one
- * @param {int}             - Scores by player two
+ * @param {char} Letter to be stored
+ * @param {char} Letter to be stored
+ * @param {char} Letter to be stored
+ * @param {int} Scores by player one
+ * @param {int} Scores by player two
  * 
  * @author Fridh, William
 */
@@ -114,7 +114,7 @@ char* getHighscoreInitials(int i) {
  * 
  * @param {int}         - index in highscorelist
  * 
- * @return {0}          - array of scores
+ * @return {i}          - array of scores
  * 
  * @author Fridh, William
 */
