@@ -241,15 +241,15 @@ void triggerOk(void) {
             break;
 
         case (11):
-            initArena();
             pvpModeOnOff(false);
+            initArena();
             setInGame(true);
             break;
 
         /* ======================================== PVP MENU ======================================== */
         case (20):
-            initArena();
             pvpModeOnOff(true);
+            initArena();
             setInGame(true);
             break;
 
