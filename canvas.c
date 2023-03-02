@@ -13,21 +13,13 @@
 #include "basicFunctions.h"                     // Used in production
 //#include "basicFunctions.c"                     // Used for debugging
 #include "menu.h"
+#include "config.h"
 
 
 
 /**
  * Data & Settings For The Canvas
 */
-#define DISPLAY_HEIGHT 32
-#define DISPLAY_WIDTH 128
-#define DISPLAY_BYTES (DISPLAY_HEIGHT/8)*DISPLAY_WIDTH
-#define LETTER_SPACING 1
-#define SMALL_TEXTLINE_ONE 0
-#define SMALL_TEXTLINE_TWO 9
-#define SMALL_TEXTLINE_THREE 18
-#define SMALL_TEXTLINE_FOUR 27
-
 static uint8_t canvas[DISPLAY_WIDTH][DISPLAY_HEIGHT];
 
 
@@ -282,11 +274,13 @@ void drawButtonDescBar(bool left_arrow, bool right_arrow, bool ok, bool back) {
  * Main - For Debugging & Example
  * 
  * @author Fridh, William
-*/
-/*
+*//*
 int main(void) {
 
-    drawButtonDescBar(false, false, false, true);
+    char t[] = {getInputChar(0), getInputChar(1), getInputChar(2)};
+    canvasWrite(t, SMALL_TEXTLINE_TWO, 9, false, true);
+
+    //drawButtonDescBar(false, false, false, true);
 
     //canvasInsertModel(0, 123, 128, 5, model_menu_navigation, false);
     //canvasWrite("BOARD", 40, 9, false, true);
@@ -321,6 +315,6 @@ int main(void) {
         }
     }
 
-}
-*/
+}*/
+
 
