@@ -156,11 +156,11 @@ void playAi(int difficulty) {
 		break;
 
 		case(1):
-		playingAi(2,96);
+		playingAi(4,96);
 		break;
 
 		case(2):
-		playingAi(1,64);
+		playingAi(4,64);
 		break;
 	}
 }
@@ -198,11 +198,8 @@ void gameOver(){
 */
 
 void serve(){
-	if (playerOneScore > playerTwoScore) {
-		ballAngle = 0;
-	} else {
-		ballAngle = PI;
-	}
+	if(playerOneScore > playerTwoScore) ballAngle = 0;
+	else ballAngle = PI;
 }
 
 
@@ -252,8 +249,8 @@ void gameButtonTriggered(int buttonData) {
 
 
 /**
- * Functions that are called when
- * in the game 
+ * Functions that are called when 
+ * the game is initilized
  * 
  * @author Åhlin, Pontus
 */
@@ -281,12 +278,12 @@ void playingGame() {
 */
 
 void resetArena() {
-    ballY = 14;
-    ballX = 62;
+    ballY = 16;
+    ballX = 64;
     paddleX1 = 0;			//The initial positions of the padels. and the ball
-    paddleY1 = 11;
+    paddleY1 = 15;
     paddleX2 = 126;
-    paddleY2 = 11;
+    paddleY2 = 15;
 	serve();				//Deciding 
 }
 

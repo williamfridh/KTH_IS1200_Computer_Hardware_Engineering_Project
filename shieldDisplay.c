@@ -2,15 +2,29 @@
 #include <stdint.h>
 #include "basicFunctions.h"
 
+/**
+ * We studied the example code below and the basic I/O shield manual
+ * and wrote our own version to enable the OLED display 
+ * @link https://github.com/is1200-example-projects/hello-display/blob/master/main.c#L9
+ * @link http://ww1.microchip.com/downloads/en/devicedoc/chipkit%20basic%20io%20shield_rm.pdf 
+*/
 
 
 /**
-* A very important function of the program that sends data to the data buffer.
-* This function is responsible for being able to communicate with the display  
-* 
-* We studied the example code below and wrote our own version
-* to enable the OLED display 
-* @link https://github.com/is1200-example-projects/hello-display/blob/master/main.c#L9
+ * A simple delay, 
+*/
+
+void delay(int ticks) {
+	int i;
+	for(i = ticks; i > 0; i--);
+}
+
+
+
+/**
+ * A very important function of the program that sends data to the data buffer.
+ * This function is responsible for being able to communicate with the display  
+ *
 */
 
 uint8_t sendToBuf(uint8_t data) {           
@@ -23,7 +37,7 @@ uint8_t sendToBuf(uint8_t data) {
 
 
 /*
-* This part of the code is used to initiate the display/buttons.
+ * This part of the code is used to initiate the display/buttons.
 */
 
 void initDisplay(){

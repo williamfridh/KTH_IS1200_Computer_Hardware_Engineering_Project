@@ -9,7 +9,6 @@ int getCharLen(char *c);
 
 void toggleCapitalLetters(char *str);
 
-void delay(int ticks);
 
 #endif
 
