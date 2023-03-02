@@ -198,8 +198,11 @@ void gameOver(){
 */
 
 void serve(){
-	if(playerOneScore > playerTwoScore) ballAngle = 0;
-	else ballAngle = PI;
+	if (playerOneScore > playerTwoScore) {
+		ballAngle = 0;
+	} else {
+		ballAngle = PI;
+	}
 }
 
 
@@ -278,12 +281,12 @@ void playingGame() {
 */
 
 void resetArena() {
-    ballY = 16;
-    ballX = 64;
+    ballY = 14;
+    ballX = 62;
     paddleX1 = 0;			//The initial positions of the padels. and the ball
-    paddleY1 = 15;
+    paddleY1 = 11;
     paddleX2 = 126;
-    paddleY2 = 15;
+    paddleY2 = 11;
 	serve();				//Deciding 
 }
 

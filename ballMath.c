@@ -96,7 +96,13 @@ void checkEdgeHit(double ballCordY, double *ballAngle) {
  * @author Fridh, William
 */
 double calcHitY(double ballCordY, int paddleCordY) {
-    return (ballCordY - paddleCordY+1)/PADDLE_HEIGHT;
+    if (ballCordY >= paddleCordY + PADDLE_HEIGHT / 2) {
+        PORTE = 0x1;
+        return (ballCordY - paddleCordY)/PADDLE_HEIGHT;
+    } else {
+        PORTE = 0x2;
+        return (ballCordY - paddleCordY + 1)/PADDLE_HEIGHT;
+    }
 }
 
 
@@ -140,7 +146,7 @@ void checkLeftPaddleHit(double ballCordX, double ballCordY, double* ballAngle, i
             *ballAngle = 0;    
         } else if (hitY < 0.5) {                                                //Upper hit 
             *ballAngle = NEAR_PI * scaleHitY(hitY);
-        } else if (hitY > 0.5) {                                                //Lower hit   
+        } else if (hitY > 0.5) {                                                //Lower hit  
             *ballAngle = 2*PI - scaleHitY(hitY)*NEAR_PI;
         }        
     }   
@@ -191,11 +197,11 @@ void checkRightPaddleHit(double ballCordX, double ballCordY, double* ballAngle, 
  * @author Åhlin, Pontus
 */
 void checkPlayerScore(int *playerOneScore, int* playerTwoScore, double ballCordX) {
-    if (ballCordX > 127.0) {                //127.0 = Goal boundary
+    if (ballCordX > 127.5) {                //127.0 = Goal boundary
         (*playerOneScore)++;                //Points to the player score, increments the value where it is pointing 
         resetArena();
     }
-    if (ballCordX < 0.0) {
+    if (ballCordX < -0.5) {
         (*playerTwoScore)++;
         resetArena();
     }
