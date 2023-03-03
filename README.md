@@ -1,5 +1,5 @@
 # IS-1200-Pong-Project
-# X-Pong
+# X-Pong (passed as an advanced project)
 
 X-Pong is an interpretation of the classic game Pong written in the languages C and Assembly to be run on a pic32 board together with a basic I/O shield. The project was one of the final parts of the KTH course "IS1200 VT23 Computer Hardware Engineering".
 
