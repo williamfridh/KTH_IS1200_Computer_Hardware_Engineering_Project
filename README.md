@@ -1,7 +1,9 @@
-# IS-1200-Pong-Project
-# X-Pong (passed as an advanced project)
+# KTH_IS1200_Computer_Hardware_Engineering_Project
+## X-Pong (passed as an advanced project)
 
-X-Pong is an interpretation of the classic game Pong written in the languages C and Assembly to be run on a pic32 board together with a basic I/O shield. The project was one of the final parts of the KTH course "IS1200 VT23 Computer Hardware Engineering".
+![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
+
+**X-Pong is an interpretation of the classic game Pong written in the languages C and Assembly to be run on a pic32 board together with a basic I/O shield. The project was one of the final parts of the KTH course [IS1200 VT23 Computer Hardware Engineering](https://www.kth.se/student/kurser/kurs/IS1200).**
 
 ### Configuration
 The program comes preconfigured for the hardware given for the course. Only the Makefile should be reconfigured for compiling, anything else can cause errors.
@@ -41,6 +43,6 @@ All files except for the following are required for compiling:
 * Pressing OK when starting the game results in moving right paddle.
 
 ### Credits & Acknowledgments
-* Fridh, William (https://github.com/williamfridh/IS-1200-Pong-Project)
+* Fridh, William (https://github.com/williamfridh)
 * Åhlin, Pontus (https://github.com/PontusAhlin)
 
